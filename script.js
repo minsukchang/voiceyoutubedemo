@@ -13,8 +13,6 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-
-
 function initialize(){
 
     // Update the controls on load
@@ -40,8 +38,6 @@ $('.playlist').on('click', function () {
   player.loadPlaylist({list: this.value, listType:"playlist"});
 });
 
-
-
 // This function is called by initialize()
 function updateTimerDisplay(){
     // Update current time text display.
@@ -55,8 +51,6 @@ function updateProgressBar(){
     // Update the value of our progress bar accordingly.
     $('#progress-bar').val((player.getCurrentTime() / player.getDuration()) * 100);
 }
-
-
 
 // Change video
 
