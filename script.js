@@ -5,7 +5,7 @@ function onYouTubeIframeAPIReady() {
     player = new YT.Player('video-placeholder', {
         width: 600,
         height: 400,
-        videoId: 'LPTlvQ1Zet0',
+        videoId: '6I58j3YIlxI',
         events: {
             onReady: initialize
         }
