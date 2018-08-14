@@ -6,8 +6,20 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <div id="video-placeholder"></div>
+    <h1>What would you like to learn today? </h1>
+    <div>
+      <p>
+        Some suggestions, <a href="https://www.youtube.com/results?search_query=how+to+put+on+eyeliner"> make-up</a>, how to play a song on an instrument you have, <a href = "https://www.youtube.com/results?search_query=how+to+do+a+coin+trick">magic trick</a>, etc. 
+      </p>
+    </div>
 
+    Copy and paste the URL here: <input type="url" id="channel" size="60">  </input>
+    <button id="mybutton" type="button" onClick="changeVideo();">Change Video</button>
+    <br>
+    <br>
+    <br>
+    <div id="video-placeholder"></div>
+    <br><br>
     <div class="container">
       <p id="recording-instructions"></p>
       <h1 id="note-textarea">Say something...</h1>
@@ -45,5 +57,6 @@
   <script type="text/javascript" src="jquery.min.js"></script>
   <script type="text/javascript" src="script.js"></script>
   <script type="text/javascript" src="app.js"></script>
+  
 
 </html>

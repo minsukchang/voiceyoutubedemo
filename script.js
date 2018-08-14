@@ -12,7 +12,15 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-
+var url;
+function changeVideo(event){
+  url = document.getElementById("channel").value;
+  //console.log(url);
+  url = url.replace("watch?v=", "embed/");
+  //console.log(url);
+  document.getElementById("video-placeholder").src = url;
+  event.target.playVideo();
+}
 
 function initialize(){
 
