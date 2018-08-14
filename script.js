@@ -7,20 +7,13 @@ function onYouTubeIframeAPIReady() {
         height: 400,
         videoId: '6I58j3YIlxI',
         events: {
-            onReady: initialize
+            onReady: initialize,
+            onStateChange: onPlayerStateChange
         }
     });
 }
 
-var url;
-function changeVideo(event){
-  url = document.getElementById("channel").value;
-  //console.log(url);
-  url = url.replace("watch?v=", "embed/");
-  //console.log(url);
-  document.getElementById("video-placeholder").src = url;
-  event.target.playVideo();
-}
+
 
 function initialize(){
 
@@ -63,6 +56,23 @@ function updateProgressBar(){
     $('#progress-bar').val((player.getCurrentTime() / player.getDuration()) * 100);
 }
 
+
+
+// Change video
+
+//document.getElementById('pause').click();
+//refresh()
+
+$('#change-btn').on('click', function () {
+    var url = document.getElementById("channel").value;
+    //url = url.replace("watch?v=", "embed/");
+    //document.getElementById("video-placeholder").src = url;
+    var id=url.substring(url.indexOf('=')+1);
+    //var x = new String(id)
+    player.loadVideoById(id);
+    player.playVideo();
+
+});
 
 // Progress bar
 
@@ -161,6 +171,10 @@ function formatTime(time){
     seconds = seconds < 10 ? '0' + seconds : seconds;
 
     return minutes + ":" + seconds;
+}
+
+function onPlayerStateChange(event) {
+
 }
 
 
