@@ -12,10 +12,6 @@ function onYouTubeIframeAPIReady() {
         }
     });
     ytLoaded = true;
-
-    if (windowWidth) { // if document loaded first
-        resizePlayer();
-    }
 }
 
 function initialize(){
