@@ -100,18 +100,18 @@ recognition.onresult = function(event) {
 
 
 recognition.onstart = function() {
-  instructions.text('Voice recognition activated. Try speaking into the microphone.');
+  //instructions.text('Voice recognition activated. Try speaking into the microphone.');
   instructions.css('color', 'lightgreen');
 }
 
 recognition.onspeechend = function() {
-  instructions.text('You were quiet for a while so voice recognition turned itself off.');
+  //instructions.text('You were quiet for a while so voice recognition turned itself off.');
   instructions.css('color', 'red');
 }
 
 recognition.onerror = function(event) {
   if(event.error == 'no-speech') {
-    instructions.text('No speech was detected. Try again.');
+    //instructions.text('No speech was detected. Try again.');
     instructions.css('color', 'yellow');
   };
 }
@@ -134,7 +134,7 @@ function refresh(){
 }
 
 $('#start-btn').on('click', function(e) {
-
+  recognition.stop();
   if (noteContent.length) {
     noteContent += ' ';
   }
