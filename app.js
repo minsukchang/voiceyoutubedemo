@@ -53,13 +53,13 @@ recognition.onresult = function(event) {
     refresh()
   }
 
-  if (transcript.indexOf("volume up") != -1 ||  transcript.indexOf("increase") != -1 || transcript.indexOf("up") != -1) {
+  if (transcript.indexOf("louder") != -1 || transcript.indexOf("volume up") != -1 ||  transcript.indexOf("increase") != -1 || transcript.indexOf("up") != -1) {
     //console.log("Volume up..")
     document.getElementById('volume-input-up').click();
     refresh()
   }
 
-  if (transcript.indexOf("volume down") != -1 ||  transcript.indexOf("decrease") != -1 || transcript.indexOf("down") != -1 ) {
+  if (transcript.indexOf("quieter") != -1 || transcript.indexOf("volume down") != -1 ||  transcript.indexOf("decrease") != -1 || transcript.indexOf("down") != -1 ) {
     //console.log("Volume down..")
     document.getElementById('volume-input-down').click();
     refresh()
@@ -127,7 +127,7 @@ function refresh(){
       //console.log(e)
     }
 
-  }, 5000);
+  }, 3000);
   //console.log('Restarted...');
 
 
