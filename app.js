@@ -77,7 +77,7 @@ recognition.onresult = function(event) {
   if (transcript.indexOf("go back") != -1 && transcript.indexOf("seconds") != -1 ) {
     //console.log("Volume down..")
     var seconds = command.substring(command.indexOf('seconds') - 3, command.indexOf('seconds')-1)
-    document.getElementById('back-btn').value = -seconds;
+    document.getElementById('back-btn').value = seconds;
     //console.log(document.querySelector('skip').value);
     document.getElementById('back-btn').click();
     refresh()

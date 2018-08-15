@@ -138,7 +138,7 @@ $('#skip-btn').on('click', function () {
 });
 
 $('#back-btn').on('click', function () {
-    player.seekTo(player.getCurrentTime() + parseInt($("#back-btn").val()), true);
+    player.seekTo(player.getCurrentTime() - parseInt($("#back-btn").val()), true);
 });
 
 
