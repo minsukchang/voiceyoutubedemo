@@ -11,6 +11,11 @@ function onYouTubeIframeAPIReady() {
             onStateChange: onPlayerStateChange
         }
     });
+    ytLoaded = true;
+
+    if (windowWidth) { // if document loaded first
+        resizePlayer();
+    }
 }
 
 function initialize(){
