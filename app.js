@@ -5,6 +5,7 @@ try {
 }
 catch(e) {
   //console.error(e);
+  refresh()
 }
 
 var noteContent = '';
@@ -30,7 +31,8 @@ recognition.onresult = function(event) {
     noteTextarea.val(noteContent);
   }
 
-  command = transcript;
+  transcript=transcript.toLowerCase();
+  //command = transcript;
   //^[0-5]?[0-9]$
   //command.substring(command.indexOf('seconds') - 3, command.indexOf('seconds')-1) --> extract the seconds number
 
@@ -100,18 +102,18 @@ recognition.onresult = function(event) {
 
 
 recognition.onstart = function() {
-  //instructions.text('Voice recognition activated. Try speaking into the microphone.');
+  instructions.text('Voice recognition activated. Try speaking into the microphone.');
   instructions.css('color', 'lightgreen');
 }
 
 recognition.onspeechend = function() {
-  //instructions.text('You were quiet for a while so voice recognition turned itself off.');
+  instructions.text('You were quiet for a while so voice recognition turned itself off.');
   instructions.css('color', 'red');
 }
 
 recognition.onerror = function(event) {
   if(event.error == 'no-speech') {
-    //instructions.text('No speech was detected. Try again.');
+    instructions.text('No speech was detected. Try again.');
     instructions.css('color', 'yellow');
   };
 }
@@ -134,7 +136,6 @@ function refresh(){
 }
 
 $('#start-btn').on('click', function(e) {
-  recognition.stop();
   if (noteContent.length) {
     noteContent += ' ';
   }
