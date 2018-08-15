@@ -32,7 +32,7 @@ recognition.onresult = function(event) {
   }
 
   transcript=transcript.toLowerCase();
-  //command = transcript;
+  command = transcript;
   //^[0-5]?[0-9]$
   //command.substring(command.indexOf('seconds') - 3, command.indexOf('seconds')-1) --> extract the seconds number
 
@@ -68,9 +68,20 @@ recognition.onresult = function(event) {
   }
 
   if (transcript.indexOf("skip") != -1 && transcript.indexOf("seconds") != -1 ) {
-    //console.log("Volume down..")
-    var seconds = command.substring(command.indexOf('seconds') - 3, command.indexOf('seconds')-1)
+    //console.log("skipping ahead..")
+    var seconds = command.split(" ")[1];
     document.getElementById('skip-btn').value = seconds;
+
+    //console.log(document.querySelector('skip').value);
+    document.getElementById('skip-btn').click();
+    refresh()
+  }
+
+  if (transcript.indexOf("skip") != -1 && transcript.indexOf("minutes") != -1 ) {
+    //console.log("Volume down..")
+    var minutes = command.split(" ")[1];
+    document.getElementById('skip-btn').value = minutes * 60;
+
     //console.log(document.querySelector('skip').value);
     document.getElementById('skip-btn').click();
     refresh()
@@ -107,8 +118,9 @@ recognition.onstart = function() {
 }
 
 recognition.onspeechend = function() {
-  instructions.text('You were quiet for a while so voice recognition turned itself off.');
+  instructions.text('You were quiet for a while so voice recognition turned itself off. \n We will restart the recognition or you can press the button below');
   instructions.css('color', 'red');
+  refresh();
 }
 
 recognition.onerror = function(event) {
@@ -116,6 +128,7 @@ recognition.onerror = function(event) {
     instructions.text('No speech was detected. Try again.');
     instructions.css('color', 'yellow');
   };
+  refresh();
 }
 
 function refresh(){
@@ -129,7 +142,7 @@ function refresh(){
       //console.log(e)
     }
 
-  }, 3000);
+  }, 1000);
   //console.log('Restarted...');
 
 

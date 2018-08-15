@@ -2,8 +2,9 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title> Using Voice for How-to Videos</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </head>
   <body>
     <!--
@@ -14,53 +15,58 @@
       </p>
     </div>
     -->
-    <div>
-      <p>
-        Copy and paste the URL here: <input type="url" id="channel" size="60">
-        <button type="button" id="change-btn" name="button">Change Video</button>
-      </p>
+
+    <p class="text-lg-center">Copy and paste your YouTube URL here</p>
+    <div class="row">
+      <div class="input-group mb-3"  style="width: 640px; float: none; margin: 0 auto; ">
+        <input type="text" class="form-control" id="channel" aria-describedby="basic-addon3">
+          <div class="input-group-append">
+            <button class="btn btn-success" type="button" id="change-btn" name="button">Change Video</button>
+          </div>      
+      </div>  
     </div>
-    <br>
-    <br>
-    <br>
-    <div class="container" id="video-placeholder"></div>
-    <br/>
-    <br/>
-    <br/>
-    <div class="container">
-      <p id="recording-instructions"></p>
-      <h1 id="note-textarea">I'm listening...</h1>
-      <br>
-      <button type="button" id="start-btn" name="button" >START LISTENING AGAIN</button>
-      <button type="button" id="pause-btn" name="button" hidden>pause</button>
 
-      <button type="button" id="play" name="button" hidden >PLAY</button>
-      <button type="button" id="pause" name="button" hidden>PAUSE</button>
-
-      <button type="button" id="volume-input-up" name="button" hidden>Vol UP</button>
-      <button type="button" id="volume-input-down" name="button" hidden>Vol DOWN</button>
-
-      <button type="button" id="mute-toggle" name="button" hidden>mute</button>
-      <button type="button" id="fullscreen" name="button" hidden>full-screen</button>
-
-      <button type="button" id="skip-btn" name="button" value="0" hidden>skip</button>
-      <button type="button" id="back-btn" name="button" value="0" hidden>back</button>
+    <div class="row">
+      <div class="mx-auto" style="width: 640px;" id="video-placeholder" >    </div>
+    </div>
       
-      <!--
-      <button type="button" id="next" name="button" hidden>NEXT</button>
-      <button type="button" id="prev" name="button" hidden>PREV</button>
-      <br>
-      <br>
-      <button type="button" class="playlist" value="PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI" name="button">Popular Music Videos - Playlist</button>
-      <br>
-      <br>
-      <button type="button" class="playlist" value="PL8fVUTBmJhHKEJjTNWn-ykf67rVrFWYtC" name="button">Sports Highlights - Playlist</button>
-      <br>
-      <br>
-      <button type="button" class="playlist" value="PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-" name="button">Popular Right Now - Playlist</button>
-    -->
-    </div>
+    <div class="row">
+        <div class="input-group mb-3"  style="width: 640px; float: none; margin: 0 auto; ">
+          <div class="container">
+            <p id="recording-instructions"></p>
+            <h1 id="note-textarea">I'm listening...</h1>
+            <br>
+            <button class="btn btn-success" type="button" id="start-btn" name="button" >START LISTENING AGAIN</button>
+            <button type="button" id="pause-btn" name="button" hidden>pause</button>
 
+            <button type="button" id="play" name="button" hidden >PLAY</button>
+            <button type="button" id="pause" name="button" hidden>PAUSE</button>
+
+            <button type="button" id="volume-input-up" name="button" hidden>Vol UP</button>
+            <button type="button" id="volume-input-down" name="button" hidden>Vol DOWN</button>
+
+            <button type="button" id="mute-toggle" name="button" hidden>mute</button>
+            <button type="button" id="fullscreen" name="button" hidden>full-screen</button>
+
+            <button type="button" id="skip-btn" name="button" value="0" hidden>skip</button>
+            <button type="button" id="back-btn" name="button" value="0" hidden>back</button>
+            
+            <!--
+            <button type="button" id="next" name="button" hidden>NEXT</button>
+            <button type="button" id="prev" name="button" hidden>PREV</button>
+            <br>
+            <br>
+            <button type="button" class="playlist" value="PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI" name="button">Popular Music Videos - Playlist</button>
+            <br>
+            <br>
+            <button type="button" class="playlist" value="PL8fVUTBmJhHKEJjTNWn-ykf67rVrFWYtC" name="button">Sports Highlights - Playlist</button>
+            <br>
+            <br>
+            <button type="button" class="playlist" value="PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-" name="button">Popular Right Now - Playlist</button>
+          -->
+          </div>
+        </div> 
+      </div>
   </body>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
@@ -68,6 +74,10 @@
   <script type="text/javascript" src="jquery.min.js"></script>
   <script type="text/javascript" src="script.js"></script>
   <script type="text/javascript" src="app.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   
 
 </html>
