@@ -122,13 +122,22 @@ $('#volume-input-down').on('click', function () {
 
 // Other options
 
-
 $('#speed').on('change', function () {
     player.setPlaybackRate($(this).val());
 });
 
 $('#quality').on('change', function () {
     player.setPlaybackQuality($(this).val());
+});
+
+
+//skip to other places in the video
+$('#skip-btn').on('click', function () {
+    player.seekTo(player.getCurrentTime() + parseInt($("#skip-btn").val()), true);
+});
+
+$('#back-btn').on('click', function () {
+    player.seekTo(player.getCurrentTime() + parseInt($("#back-btn").val()), true);
 });
 
 

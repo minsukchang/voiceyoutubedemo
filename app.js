@@ -31,22 +31,23 @@ recognition.onresult = function(event) {
   }
 
   command = transcript;
-
+  //^[0-5]?[0-9]$
+  //command.substring(command.indexOf('seconds') - 3, command.indexOf('seconds')-1) --> extract the seconds number
 
   noteTextarea.text(transcript);
-  if (transcript.indexOf("play") != -1 ) {
+  if (transcript.indexOf("play") != -1 || transcript.indexOf("resume") != -1 ) {
     //console.log("PLaying..")
     document.getElementById('play').click();
     refresh()
   }
 
-  if (transcript.indexOf("pause") != -1 || transcript.indexOf("stop") != -1 ) {
+  if (transcript.indexOf("pause") != -1 || transcript.indexOf("stop") != -1 || transcript.indexOf("wait") != -1 || transcript.indexOf("hold on") != -1 )  {
     //console.log("Pausing..")
     document.getElementById('pause').click();
     refresh()
   }
 
-  if (transcript.indexOf("mute") != -1  || transcript.indexOf("volume of") != -1 ) {
+  if (transcript.indexOf("mute") != -1  || transcript.indexOf("volume of") != -1 || transcript.indexOf("volume off") != -1 ) {
     //console.log("Muting..")
     document.getElementById('mute-toggle').click();
     refresh()
@@ -61,6 +62,24 @@ recognition.onresult = function(event) {
   if (transcript.indexOf("volume down") != -1 ||  transcript.indexOf("decrease") != -1 || transcript.indexOf("down") != -1 ) {
     //console.log("Volume down..")
     document.getElementById('volume-input-down').click();
+    refresh()
+  }
+
+  if (transcript.indexOf("skip") != -1 && transcript.indexOf("seconds") != -1 ) {
+    //console.log("Volume down..")
+    var seconds = command.substring(command.indexOf('seconds') - 3, command.indexOf('seconds')-1)
+    document.getElementById('skip-btn').value = seconds;
+    //console.log(document.querySelector('skip').value);
+    document.getElementById('skip-btn').click();
+    refresh()
+  }
+
+  if (transcript.indexOf("go back") != -1 && transcript.indexOf("seconds") != -1 ) {
+    //console.log("Volume down..")
+    var seconds = command.substring(command.indexOf('seconds') - 3, command.indexOf('seconds')-1)
+    document.getElementById('back-btn').value = -seconds;
+    //console.log(document.querySelector('skip').value);
+    document.getElementById('back-btn').click();
     refresh()
   }
 
