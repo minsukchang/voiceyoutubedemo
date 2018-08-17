@@ -37,6 +37,13 @@ recognition.onresult = function(event) {
   //command.substring(command.indexOf('seconds') - 3, command.indexOf('seconds')-1) --> extract the seconds number
 
   noteTextarea.text(transcript);
+  if (transcript.indexOf("change video") != -1) {
+    //console.log("PLaying..")
+    document.getElementById('change-btn').click();
+    refresh()
+  }
+
+
   if (transcript.indexOf("play") != -1 || transcript.indexOf("resume") != -1 ) {
     //console.log("PLaying..")
     document.getElementById('play').click();
@@ -161,6 +168,6 @@ noteTextarea.on('input', function() {
 })
 
 $('#pause-btn').on('click', function(e) {
-  recognition.stop();
+  recognition.abort();
   //console.log('Voice recognition paused.');
 });
