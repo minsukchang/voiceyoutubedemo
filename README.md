@@ -1,3 +1,7 @@
-#Control Youtube Videos with Voice
+# Control Youtube Videos with Voice
 
-node app.js
+## how to run locally
+1) node app.js from terminal
+2) localhost:5000
+
+*demo available at minsukchang.com/voiceyoutubedemo*
