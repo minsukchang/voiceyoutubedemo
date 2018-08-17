@@ -156,6 +156,7 @@ function refresh(){
 }
 
 $('#start-btn').on('click', function(e) {
+  recognition.abort();
   if (noteContent.length) {
     noteContent += ' ';
   }
