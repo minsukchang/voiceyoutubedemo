@@ -62,7 +62,7 @@ $('#change-btn').on('click', function () {
     var url = document.getElementById("channel").value;
     //url = url.replace("watch?v=", "embed/");
     //document.getElementById("video-placeholder").src = url;
-    if url.includes("?t="){
+    if (url.includes("?t=")) {
         var id=url.substring(url.indexOf('=')+1, url.indexOf('?t='));
     } else{
         var id=url.substring(url.indexOf('=')+1);
