@@ -32,12 +32,7 @@ function initialize(){
 
 
     $('#volume-input').val(Math.round(player.getVolume()));
-}
-
-
-$('document').ready(function() {
-    $('#myModal1').modal('show');
-});
+} 
 
 //modal slideshow
 $("div[id^='myModal']").each(function () {

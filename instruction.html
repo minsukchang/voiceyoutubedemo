@@ -8,288 +8,253 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
     crossorigin="anonymous">
   <style>
-    .modal-title {
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
+    /* Important part */
+    .modal-dialog {
+      overflow-y: initial !important
     }
 
-    @media screen and (min-width: 768px) {
-      #myModal .modal-dialog {
-        webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
-      }
-    }
-
-    #myModal .modal-header {
-      border-radius: 5px 5px 0 0;
-      background-color: #fff;
-    }
-
-    #myModal .modal-content {
-      background-color: #fff;
-      border-radius: 0;
-      padding: 20px;
-      box-shadow: none;
-      background-clip: inherit;
-    }
-
-    #myModal .modal-footer {
-      background-color: #fff;
-      border-radius: 0 0 5px 5px;
+    .modal-body {
+      height: 400px;
+      overflow-y: auto;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal1">
-    Player 1
-  </button>
+  <div class="row">
+    <div class="col-md-2 col-md-offset-5">
+      <div class="container">
+        <!-- Modal -->
+        <button type="button" class="btn btn-secondary align-middle" data-toggle="modal" data-target="#myModal1"> View Instructions
+          Again
+        </button>
 
-  <!-- Modal -->
-  <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Instruction 1/9</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Instruction 1/8 - Reading all the Instructions</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+
+                <p> In this experiment, we want to see how using voice to navigate how-to videos can help people accomplish
+                  their tasks.</p>
+                <p>There are total <b>EIGHT instructions</b>, Please read them all before diving into the tasks</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-success btn-next">I will read all eight instructions</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button> </div>
+            </div>
+          </div>
         </div>
-        <div class="modal-body">
-          <p> 1. In this experiment, we want to see how using voice to navigate how-to videos can help people accomplish
-            their tasks.</p>
+
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Instruction 2/8 - Getting the Tools Ready</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <p>
+                  <b>YOU HAVE TO WATCH, DO AND LEARN SIMULTANEOUSLY.</b></p>
+                <p>So please have the necessary tools ready at your hands, so you can follow the video while doing the tasks.</p>
+                <p>
+                  Do you have the tools with you now?
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
+                <button type="button" class="btn btn-outline-success btn-next">I have the tools with me</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default btn-prev">Go Back</button>
-            <button type="button" class="btn btn-default btn-next">Ready for Next Step</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Instruction 3/8 - Allowing Microphone Access</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <p>When you visit https://www.minsukchang.com/voiceyoutubedemo/, the website will prompt about granting microphone
+                  access.
+                </p>
+                <p>Please click “ALLOW”. You will need this in order for the interface to listen to you.</p>
+                <p>
+                  <img src="mic-allow.gif" alt="allow microphone acess"> </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
+                <button type="button" class="btn btn-outline-success btn-next">I understand that I have to grant microphone
+                  access when prompted</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
         </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Instruction 4/8 - Getting My Video in the Interface</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <p>once you have found a youtub video you want to follow, copy the URL of your YouTube video <b> from the
+                    address bar at the top</b></p>
+                <p>paste in the URL of the video you found in the interface and click (or say) “change video” </p>
+                <p>If the video changes and starts playing, say “stop”</p>
+                <p>If these steps worked, your microphone is working with the interface. If it does not work, please refresh
+                  the page, and follow the steps 3 and 4 again.</p>
+                <p> <img src="url-cap.gif" alt="allow microphone acess"> </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
+                <button type="button" class="btn btn-outline-success btn-next">I understand how to copy&paste my video</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Instruction 5/8 - Interface Functions</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+
+                <p> On the interface, you can control the video using voice, play, pause, stop, go back or skip by a few
+                  seconds or minutes, and more. </p>
+                <p> At any point if you think the interface is not listening to you, you can click on the “start listening
+                  again” button.</p>
+                <p>
+                  If the interface does not support what you want to do, say it how you want to be able to say. And carry out the task using
+                  mouse, keyboard, or voice.
+                </p>
+                <p>
+                  Example.
+                  <ul>
+                    <li>my need: "I want to see the beginning of the step, because I want to check if I have it right"</li>
+                    <li>I want to be able to say: "I want to see that again"</li>
+                    <li>How I did it: used mouse to scrub the timeline and found the beginning of step</li>
+                  </ul>
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
+                <button type="button" class="btn btn-outline-success btn-next">I understand that I can freely express what
+                  I want</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Instruction 6/8 - Wearing a Headset</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+
+                <p>
+                  Please wear a headset to watch the video and follow the tasks </p>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
+                <button type="button" class="btn btn-outline-success btn-next">I'm wearing my headset</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal7" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Instruction 7/8 - Picking a Different Video</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <p>Feel free to pick another video, if first video is not good for you at any point in the study.</p>
+                <p>Just find another video from YouTube and paste the URL. </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
+                <button type="button" class="btn btn-outline-success btn-next">I understand that I can pick different videos</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal8" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Instruction 8/8 - THINKING ALOUD</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <p> <b>PLEASE THINK ALOUD THROUGHOUT.</b></p>
+                <p> <b>Describe what you’re trying to do and why</b></p>
+                <p>You may pause, go back, skip, watch again, take as much time as you want to finish. </p>
+                <p>Go ahead open <a href="https://www.minsukchang.com/voiceyoutubedemo/ "> https://www.minsukchang.com/voiceyoutubedemo/
+                  </a>and <a href="https://www.youtube.com">YouTube</a> to start learning and doing while watching the video!
+                  </p>
+                <p>You can visit this instruction again by clicking "view instruction again" button.</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
+                <button type="button" class="btn btn-outline-success" data-dismiss="modal">READY TO START!</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
-
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Instruction 2/9</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-          <p>
-            2. <b>YOU HAVE TO WATCH, DO AND LEARN SIMULTANEOUSLY.</b> <br> So please have the necessary tools ready, so you
-            can follow the video while doing the tasks.</p>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default btn-prev">Go Back</button>
-            <button type="button" class="btn btn-default btn-next">Ready for Next Step</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Instruction 3/9</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-          <p>3. Visit <a href="https://www.minsukchang.com/voiceyoutubedemo/ ">https://www.minsukchang.com/voiceyoutubedemo/
-            </a>and when prompted about microphone access, click “ALLOW”. You will need this in order for the interface to
-            listen to you.
-            <img src="mic-access-cap.gif" alt="allow microphone acess"> </p>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default btn-prev">Go Back</button>
-            <button type="button" class="btn btn-default btn-next">Ready for Next Step</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Instruction 4/9</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-          <p>
-            4. paste in the URL of the video you found and click (or say) “change video” <br> If the video changes and starts
-            playing, say “stop”<br> If these steps worked, your microphone is working with the interface. If it does not
-            work, please refresh the page, and follow the steps 3 and 4 again.
-            <img src="url-cap.gif" alt="allow microphone acess"> </p>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default btn-prev">Go Back</button>
-            <button type="button" class="btn btn-default btn-next">Ready for Next Step</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Instruction 5/9</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-
-          5. On the interface, you can control the video using voice, play, pause, stop, go back or skip by a few seconds or minutes,
-          and more. <br> At any point if you think the interface is not listening to you, you can click on the
-          “start listening again” button.</p>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default btn-prev">Go Back</button>
-            <button type="button" class="btn btn-default btn-next">Ready for Next Step</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Instruction 6/9</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-
-          <p>
-            6. Please wear a headset and watch the video and follow the tasks </p>
-
-
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default btn-prev">Go Back</button>
-            <button type="button" class="btn btn-default btn-next">Ready for Next Step</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal7" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Instruction 7/9</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-          <p>
-            7. Feel free to pick another video, if first video is not good for you at any point in the study. <br> Just find
-            another video from YouTube and paste the URL. </p>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default btn-prev">Go Back</button>
-          <button type="button" class="btn btn-default btn-next">Ready for Next Step</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal8" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Instruction 8/9</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-          <p>
-            8. THINK ALOUD THROUGHOUT. <br>
-            <b> Describe what you’re trying to do and why <b> <br> You may pause, go back, skip, watch again, take as much
-                time as you want to finish. <br> </p>
-          </p>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default btn-prev">Go Back</button>
-            <button type="button" class="btn btn-default btn-next">Ready for Next Step</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal9" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Instruction 9/9</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-          <p>
-            . Go ahead and start learning and doing while watching the video! <br> You can visit this instruction again
-            by clicking "view instruction again" button.</p>
-
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default btn-prev">Go Back</button>
-            <button type="button" class="btn btn-default btn-next">Ready for Next Step</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 
-</html>
+<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+  crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  crossorigin="anonymous"></script>
 
 <script type="text/javascript">
-  //$('document').ready(function() {
-  //    $('.modal').modal('show');
-  //  });
-  //  $('#inst-btn').on('click',function() {
-  //    $('.modal').modal('show');
-  //  });
-
-  $("div[id^='myModal']").each(function () {
-
-    var currentModal = $(this);
-
-    //click next
-    currentModal.find('.btn-next').click(function () {
-      currentModal.modal('hide');
-      currentModal.closest("div[id^='myModal']").nextAll("div[id^='myModal']").first().modal('show');
-    });
-
-    //click prev
-    currentModal.find('.btn-prev').click(function () {
-      currentModal.modal('hide');
-      currentModal.closest("div[id^='myModal']").prevAll("div[id^='myModal']").first().modal('show');
-    });
-
+  $('document').ready(function () {
+    $('#myModal1').modal('show');
   });
-
-
 </script>
+
+</html>
