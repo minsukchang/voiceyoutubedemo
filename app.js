@@ -62,25 +62,25 @@ recognition.onresult = function (event) {
   if (transcript.indexOf("mute") != -1 || transcript.indexOf("volume of") != -1 || transcript.indexOf("volume off") != -1) {
     //console.log("Muting..")
     document.getElementById('mute-toggle').click();
-    refresh()
+    refresh();
   }
 
   if (transcript.indexOf("unmute") != -1 || transcript.indexOf("volume on") != -1) {
     //console.log("Muting..")
     document.getElementById('mute-toggle').click();
-    refresh()
+    refresh();
   }
 
   if (transcript.indexOf("louder") != -1 || transcript.indexOf("volume up") != -1 || transcript.indexOf("increase") != -1 || transcript.indexOf("up") != -1) {
     //console.log("Volume up..")
     document.getElementById('volume-input-up').click();
-    refresh()
+    refresh();
   }
 
   if (transcript.indexOf("quieter") != -1 || transcript.indexOf("volume down") != -1 || transcript.indexOf("decrease") != -1) {
     //console.log("Volume down..")
     document.getElementById('volume-input-down').click();
-    refresh()
+    refresh();
   }
 
   var ccommand;
