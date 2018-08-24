@@ -133,7 +133,7 @@ $('#faster-btn').on('click', function () {
     }
 });
 
-$('#slower').on('click', function () {
+$('#slower-btn').on('click', function () {
     //playbackrate[playbackrate.indexOf[player.getPlaybackRate()]+1];
     playbackrate = player.getAvailablePlaybackRates();
     idx = playbackrate.indexOf(player.getPlaybackRate()) - 1;
@@ -141,7 +141,7 @@ $('#slower').on('click', function () {
     if (idx < 0) {
         alert("can't play any slower");
     } else {
-        player.setPlaybackRate(playbackrate[idx] - 1);
+        player.setPlaybackRate(playbackrate[idx]);
     }
 
     //can't play any slower

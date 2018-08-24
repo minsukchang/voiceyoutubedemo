@@ -37,7 +37,9 @@ recognition.onresult = function (event) {
   //^[0-5]?[0-9]$
   //command.substring(command.indexOf('seconds') - 3, command.indexOf('seconds')-1) --> extract the seconds number
 
-  noteTextarea.text(transcript);
+  noteTextarea.text("I heard: " + transcript);
+
+
   if (transcript.indexOf("change video") != -1) {
     //console.log("PLaying..")
     document.getElementById('change-btn').click();
@@ -58,6 +60,12 @@ recognition.onresult = function (event) {
   }
 
   if (transcript.indexOf("mute") != -1 || transcript.indexOf("volume of") != -1 || transcript.indexOf("volume off") != -1) {
+    //console.log("Muting..")
+    document.getElementById('mute-toggle').click();
+    refresh()
+  }
+
+  if (transcript.indexOf("unmute") != -1 || transcript.indexOf("volume on") != -1) {
     //console.log("Muting..")
     document.getElementById('mute-toggle').click();
     refresh()
@@ -154,12 +162,13 @@ recognition.onresult = function (event) {
     //console.log('play faster');
     //console.log(document.getElementById('faster-btn'));
     document.getElementById('faster-btn').click();
-
+    refresh();
   }
 
   if ((transcript.indexOf("slower") != -1) || (transcript.indexOf("slow down") != -1)){
     //document.getElementById('faster-btn').value = 60 * nnumber;
     document.getElementById('slower-btn').click();
+    refresh();
   }
 
   if (transcript.indexOf("next") != -1) {
