@@ -6,15 +6,21 @@ function onYouTubeIframeAPIReady() {
         width: 600,
         height: 400,
         videoId: 'Jch-LDFwnzw',
+        playerVars:{
+            html5: 1,
+            controls: 1,
+            showinfo: 0
+        },
         events: {
             onReady: initialize,
-            onStateChange: onPlayerStateChange
+            onStateChange: onPlayerStateChange,
+            onPlaybackRateChange: onPlayerPlaybackRateChange
         }
     });
     ytLoaded = true;
 }
 
-function initialize(){
+function initialize() {
 
     // Update the controls on load
     updateTimerDisplay();
@@ -32,7 +38,7 @@ function initialize(){
 
 
     $('#volume-input').val(Math.round(player.getVolume()));
-} 
+}
 
 //modal slideshow
 $("div[id^='myModal']").each(function () {
@@ -41,34 +47,34 @@ $("div[id^='myModal']").each(function () {
 
     //click next
     currentModal.find('.btn-next').click(function () {
-      currentModal.modal('hide');
-      currentModal.closest("div[id^='myModal']").nextAll("div[id^='myModal']").first().modal('show');
+        currentModal.modal('hide');
+        currentModal.closest("div[id^='myModal']").nextAll("div[id^='myModal']").first().modal('show');
     });
 
     //click prev
     currentModal.find('.btn-prev').click(function () {
-      currentModal.modal('hide');
-      currentModal.closest("div[id^='myModal']").prevAll("div[id^='myModal']").first().modal('show');
+        currentModal.modal('hide');
+        currentModal.closest("div[id^='myModal']").prevAll("div[id^='myModal']").first().modal('show');
     });
 
-  });
+});
 
 
 $('.playlist').on('click', function () {
-  //console.log(this.value)
-  player.loadPlaylist({list: this.value, listType:"playlist"});
+    //console.log(this.value)
+    player.loadPlaylist({ list: this.value, listType: "playlist" });
 });
 
 // This function is called by initialize()
-function updateTimerDisplay(){
+function updateTimerDisplay() {
     // Update current time text display.
-    $('#current-time').text(formatTime( player.getCurrentTime() ));
-    $('#duration').text(formatTime( player.getDuration() ));
+    $('#current-time').text(formatTime(player.getCurrentTime()));
+    $('#duration').text(formatTime(player.getDuration()));
 }
 
 
 // This function is called by initialize()
-function updateProgressBar(){
+function updateProgressBar() {
     // Update the value of our progress bar accordingly.
     $('#progress-bar').val((player.getCurrentTime() / player.getDuration()) * 100);
 }
@@ -83,11 +89,11 @@ $('#change-btn').on('click', function () {
     //url = url.replace("watch?v=", "embed/");
     //document.getElementById("video-placeholder").src = url;
     if (url.includes("?t=")) {
-        var id=url.substring(url.indexOf('=')+1, url.indexOf('?t='));
-    } else{
-        var id=url.substring(url.indexOf('=')+1);
+        var id = url.substring(url.indexOf('=') + 1, url.indexOf('?t='));
+    } else {
+        var id = url.substring(url.indexOf('=') + 1);
     }
-        
+
     //var x = new String(id)
     player.loadVideoById(id);
     player.playVideo();
@@ -97,26 +103,48 @@ $('#change-btn').on('click', function () {
 // Progress bar
 
 $('#progress-bar').on('mouseup touchend', function (e) {
-
     // Calculate the new time for the video.
     // new time in seconds = total duration in seconds * ( value of range input / 100 )
     var newTime = player.getDuration() * (e.target.value / 100);
-
     // Skip video to new time.
     player.seekTo(newTime);
-
 });
 
-
 // Playback
-
 $('#play').on('click', function () {
     player.playVideo();
 });
 
-
 $('#pause').on('click', function () {
     player.pauseVideo();
+});
+
+//pace control
+
+$('#faster-btn').on('click', function () {
+    //playbackrate[playbackrate.indexOf[player.getPlaybackRate()]+1];
+    playbackrate = player.getAvailablePlaybackRates();
+    idx = playbackrate.indexOf(player.getPlaybackRate()) + 1;
+    console.log(playbackrate[idx]);
+    if (idx > playbackrate.length) {
+        alert("cannot play any faster");
+    } else {
+        player.setPlaybackRate(playbackrate[idx]);
+    }
+});
+
+$('#slower').on('click', function () {
+    //playbackrate[playbackrate.indexOf[player.getPlaybackRate()]+1];
+    playbackrate = player.getAvailablePlaybackRates();
+    idx = playbackrate.indexOf(player.getPlaybackRate()) - 1;
+    console.log(playbackrate[idx]);
+    if (idx < 0) {
+        alert("can't play any slower");
+    } else {
+        player.setPlaybackRate(playbackrate[idx] - 1);
+    }
+
+    //can't play any slower
 });
 
 
@@ -124,14 +152,14 @@ $('#pause').on('click', function () {
 // Sound volume
 
 
-$('#mute-toggle').on('click', function() {
+$('#mute-toggle').on('click', function () {
     var mute_toggle = $(this);
 
-    if(player.isMuted()){
+    if (player.isMuted()) {
         player.unMute();
         mute_toggle.text('volume_up');
     }
-    else{
+    else {
         player.mute();
         mute_toggle.text('volume_off');
     }
@@ -191,7 +219,7 @@ $('.thumbnail').on('click', function () {
 
 // Helper Functions
 
-function formatTime(time){
+function formatTime(time) {
     time = Math.round(time);
 
     var minutes = Math.floor(time / 60),
@@ -203,10 +231,12 @@ function formatTime(time){
 }
 
 function onPlayerStateChange(event) {
-
 }
 
+function onPlayerPlaybackRateChange(playbackRate) {
+    console.log(player.getPlaybackRate());
+}
 
-$('pre code').each(function(i, block) {
+$('pre code').each(function (i, block) {
     hljs.highlightBlock(block);
 });

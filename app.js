@@ -3,9 +3,9 @@ try {
   var recognition = new SpeechRecognition();
   recognition.start();
 }
-catch(e) {
+catch (e) {
   //console.error(e);
-  refresh()
+  refresh();
 }
 
 var noteContent = '';
@@ -16,23 +16,24 @@ var command = "";
 recognition.continuous = true;
 //onYouTubeIframeAPIReady();
 
-recognition.onresult = function(event) {
+recognition.onresult = function (event) {
 
-  //console.log(recognition)
+  //console.log(recognition);
 
   var current = event.resultIndex;
 
   var transcript = event.results[current][0].transcript;
+  //console.log(transcript);
 
   var mobileRepeatBug = (current == 1 && transcript == event.results[0][0].transcript);
 
-  if(!mobileRepeatBug) {
+  if (!mobileRepeatBug) {
     noteContent += transcript;
     noteTextarea.val(noteContent);
   }
 
-  transcript=transcript.toLowerCase();
-  command = transcript;
+  transcript = transcript.toLowerCase();
+  var command = transcript;
   //^[0-5]?[0-9]$
   //command.substring(command.indexOf('seconds') - 3, command.indexOf('seconds')-1) --> extract the seconds number
 
@@ -40,115 +41,163 @@ recognition.onresult = function(event) {
   if (transcript.indexOf("change video") != -1) {
     //console.log("PLaying..")
     document.getElementById('change-btn').click();
-    refresh()
+    refresh();
   }
 
 
-  if (transcript.indexOf("play") != -1 || transcript.indexOf("resume") != -1 ) {
+  if (transcript.indexOf("play") != -1 || transcript.indexOf("resume") != -1) {
     //console.log("PLaying..")
     document.getElementById('play').click();
-    refresh()
+    refresh();
   }
 
-  if (transcript.indexOf("pause") != -1 || transcript.indexOf("stop") != -1 || transcript.indexOf("wait") != -1 || transcript.indexOf("hold on") != -1 )  {
+  if (transcript.indexOf("pause") != -1 || transcript.indexOf("stop") != -1 || transcript.indexOf("wait") != -1 || transcript.indexOf("hold on") != -1) {
     //console.log("Pausing..")
     document.getElementById('pause').click();
-    refresh()
+    refresh();
   }
 
-  if (transcript.indexOf("mute") != -1  || transcript.indexOf("volume of") != -1 || transcript.indexOf("volume off") != -1 ) {
+  if (transcript.indexOf("mute") != -1 || transcript.indexOf("volume of") != -1 || transcript.indexOf("volume off") != -1) {
     //console.log("Muting..")
     document.getElementById('mute-toggle').click();
     refresh()
   }
 
-  if (transcript.indexOf("louder") != -1 || transcript.indexOf("volume up") != -1 ||  transcript.indexOf("increase") != -1 || transcript.indexOf("up") != -1) {
+  if (transcript.indexOf("louder") != -1 || transcript.indexOf("volume up") != -1 || transcript.indexOf("increase") != -1 || transcript.indexOf("up") != -1) {
     //console.log("Volume up..")
     document.getElementById('volume-input-up').click();
     refresh()
   }
 
-  if (transcript.indexOf("quieter") != -1 || transcript.indexOf("volume down") != -1 ||  transcript.indexOf("decrease") != -1 || transcript.indexOf("down") != -1 ) {
+  if (transcript.indexOf("quieter") != -1 || transcript.indexOf("volume down") != -1 || transcript.indexOf("decrease") != -1) {
     //console.log("Volume down..")
     document.getElementById('volume-input-down').click();
     refresh()
   }
 
-  if (transcript.indexOf("skip") != -1 && transcript.indexOf("seconds") != -1 ) {
-    //console.log("skipping ahead..")
-    var seconds = command.split(" ")[1];
-    if (Number.isInteger(seconds) == false ){
-      seconds=text2num(seconds);
-    }   
-    document.getElementById('skip-btn').value = seconds;
-    
-
-    //console.log(document.querySelector('skip').value);
-    document.getElementById('skip-btn').click();
-    refresh()
-  }
-
-  if (transcript.indexOf("skip") != -1 && transcript.indexOf("minutes") != -1 ) {
-    //console.log("Volume down..")
-    var minutes = command.split(" ")[1];
-    if (Number.isInteger(minutes) == false){
-      minutes = text2num(minutes);
+  var ccommand;
+  var idx;
+  var nnumber;
+  var flag=0;
+  skipping: if (transcript.indexOf("skip") != -1) {
+    //console.log(transcript);
+    ccommand = transcript.split(" ");
+    //console.log(ccommand);
+    if (transcript.indexOf("minutes")) {
+      idx = ccommand.indexOf("minutes") - 1;
+      flag=1;
+    } else if (transcript.indexOf("minute")) {
+      idx = ccommand.indexOf("minute") - 1;
+      flag=1;
+    } else if (transcript.indexOf("seconds")) {
+      idx = ccommand.indexOf("seconds") - 1;
+    } else if (transcript.indexOf("second")) {
+      idx = ccommand.indexOf("second") - 1;
+    } else {
+      break skipping;
     }
-    document.getElementById('skip-btn').value = minutes * 60;
+    //console.log("how much to jump: " + ccommand[idx]);
+    
+    if (parseInt(nnumber) == NaN){
+      nnumber = text2num(ccommand[idx]);      
+    } 
+    nnumber = parseInt(ccommand[idx]);
 
-
-    //console.log(document.querySelector('skip').value);
+    //console.log("number of minutes or seconds: " + nnumber);
+    if (flag==1){
+      document.getElementById('skip-btn').value = 60 * nnumber;
+    } else{
+      document.getElementById('skip-btn').value = nnumber;
+    } 
     document.getElementById('skip-btn').click();
-    refresh()
+    
+    refresh();
   }
 
-  if (transcript.indexOf("go back") != -1 && transcript.indexOf("seconds") != -1 ) {
-    //console.log("Volume down..")
-    var seconds = command.substring(command.indexOf('seconds') - 3, command.indexOf('seconds')-1)
-    document.getElementById('back-btn').value = seconds;
-    //console.log(document.querySelector('skip').value);
+  rewind: if (transcript.indexOf("go back") != -1) {
+    //console.log(transcript);
+    ccommand = transcript.split(" ");
+    //console.log(ccommand);
+    if (transcript.indexOf("minutes")) {
+      idx = ccommand.indexOf("minutes") - 1;
+      flag=1;
+    } else if (transcript.indexOf("minute")) {
+      idx = ccommand.indexOf("minute") - 1;
+      flag=1;
+    } else if (transcript.indexOf("seconds")) {
+      idx = ccommand.indexOf("seconds") - 1;
+    } else if (transcript.indexOf("second")) {
+      idx = ccommand.indexOf("second") - 1;
+    } else {
+      break rewind;
+    }
+    //console.log("how much to jump: " + ccommand[idx]);
+    
+    if (parseInt(nnumber) == NaN){
+      nnumber = text2num(ccommand[idx]);      
+    } 
+    nnumber = parseInt(ccommand[idx]);
+
+    //console.log("number of minutes or seconds: " + nnumber);
+    if (flag==1){
+      document.getElementById('back-btn').value = 60 * nnumber;
+    } else{
+      document.getElementById('back-btn').value = nnumber;
+    } 
     document.getElementById('back-btn').click();
-    refresh()
+    
+    refresh();
   }
 
-  if (transcript.indexOf("next") != -1 ) {
+  if ((transcript.indexOf("faster") != -1) || (transcript.indexOf("speed up") != -1) ){
+    //document.getElementById('faster-btn').value = 60 * nnumber;
+    //console.log('play faster');
+    //console.log(document.getElementById('faster-btn'));
+    document.getElementById('faster-btn').click();
+
+  }
+
+  if ((transcript.indexOf("slower") != -1) || (transcript.indexOf("slow down") != -1)){
+    //document.getElementById('faster-btn').value = 60 * nnumber;
+    document.getElementById('slower-btn').click();
+  }
+
+  if (transcript.indexOf("next") != -1) {
     //console.log("Next Vid..")
     document.getElementById('next').click();
-    refresh()
+    refresh();
   }
 
   if (transcript.indexOf("prev") != -1) {
     //console.log("Prev Vid..")
     document.getElementById('prev').click();
-    refresh()
+    refresh();
   }
-
-
 };
 
 
-recognition.onstart = function() {
+recognition.onstart = function () {
   instructions.text('Voice recognition activated. Try speaking into the microphone.');
   instructions.css('color', 'lightgreen');
 }
 
-recognition.onspeechend = function() {
+recognition.onspeechend = function () {
   instructions.text('You were quiet for a while so voice recognition turned itself off. \n We will restart the recognition or you can press the button below');
   instructions.css('color', 'red');
   refresh();
 }
 
-recognition.onerror = function(event) {
-  if(event.error == 'no-speech') {
+recognition.onerror = function (event) {
+  if (event.error == 'no-speech') {
     instructions.text('No speech was detected. Try again.');
     instructions.css('color', 'yellow');
   };
   refresh();
 }
 
-function refresh(){
+function refresh() {
   recognition.abort();
-  setInterval(function() {
+  setInterval(function () {
     //console.log('Refresh...');
 
     try {
@@ -163,7 +212,7 @@ function refresh(){
 
 }
 
-$('#start-btn').on('click', function(e) {
+$('#start-btn').on('click', function (e) {
   recognition.abort();
   if (noteContent.length) {
     noteContent += ' ';
@@ -172,11 +221,11 @@ $('#start-btn').on('click', function(e) {
 
 });
 
-noteTextarea.on('input', function() {
+noteTextarea.on('input', function () {
   noteContent = $(this).val();
 })
 
-$('#pause-btn').on('click', function(e) {
+$('#pause-btn').on('click', function (e) {
   recognition.abort();
   //console.log('Voice recognition paused.');
 });
@@ -215,17 +264,17 @@ var Small = {
 };
 
 var Magnitude = {
-  'thousand':     1000,
-  'million':      1000000,
-  'billion':      1000000000,
-  'trillion':     1000000000000,
-  'quadrillion':  1000000000000000,
-  'quintillion':  1000000000000000000,
-  'sextillion':   1000000000000000000000,
-  'septillion':   1000000000000000000000000,
-  'octillion':    1000000000000000000000000000,
-  'nonillion':    1000000000000000000000000000000,
-  'decillion':    1000000000000000000000000000000000,
+  'thousand': 1000,
+  'million': 1000000,
+  'billion': 1000000000,
+  'trillion': 1000000000000,
+  'quadrillion': 1000000000000000,
+  'quintillion': 1000000000000000000,
+  'sextillion': 1000000000000000000000,
+  'septillion': 1000000000000000000000000,
+  'octillion': 1000000000000000000000000000,
+  'nonillion': 1000000000000000000000000000000,
+  'decillion': 1000000000000000000000000000000000,
 };
 
 var a, n, g;
@@ -241,17 +290,17 @@ function text2num(s) {
 function feach(w) {
   var x = Small[w];
   if (x != null) {
-      g = g + x;
+    g = g + x;
   }
   else if (w == "hundred") {
-      g = g * 100;
+    g = g * 100;
   }
   else {
-      x = Magnitude[w];
-      if (x != null) {
-          n = n + g * x
-          g = 0;
-      }
+    x = Magnitude[w];
+    if (x != null) {
+      n = n + g * x
+      g = 0;
+    }
   }
 }
 
