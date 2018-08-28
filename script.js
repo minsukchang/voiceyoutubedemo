@@ -6,7 +6,7 @@ function onYouTubeIframeAPIReady() {
         width: 600,
         height: 400,
         videoId: 'Jch-LDFwnzw',
-        playerVars:{
+        playerVars: {
             html5: 1,
             controls: 1,
             showinfo: 0
@@ -36,7 +36,6 @@ function initialize() {
         updateProgressBar();
     }, 1000);
 
-
     $('#volume-input').val(Math.round(player.getVolume()));
 }
 
@@ -49,6 +48,7 @@ $("div[id^='myModal']").each(function () {
     currentModal.find('.btn-next').click(function () {
         currentModal.modal('hide');
         currentModal.closest("div[id^='myModal']").nextAll("div[id^='myModal']").first().modal('show');
+
     });
 
     //click prev
@@ -56,7 +56,6 @@ $("div[id^='myModal']").each(function () {
         currentModal.modal('hide');
         currentModal.closest("div[id^='myModal']").prevAll("div[id^='myModal']").first().modal('show');
     });
-
 });
 
 
@@ -96,7 +95,7 @@ $('#change-btn').on('click', function () {
 
     //var x = new String(id)
     player.loadVideoById(id);
-    player.playVideo();
+    $('#checkModal').modal('show');
 
 });
 

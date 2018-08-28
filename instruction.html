@@ -59,13 +59,14 @@
               </div>
               <div class="modal-body">
 
-                <p> In this experiment, we want to see how using voice to navigate how-to videos can help people accomplish
+                <p> In this experiment, we want to see how using voice to navigate <b>HOW-TO VIDEOS</b> can help people accomplish
                   their tasks.</p>
                 <p>There are total <b>EIGHT instructions</b>, Please read them all before diving into the tasks</p>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success btn-next">I will read all eight instructions</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button> </div>
+                <button type="button" id="proceed-btn" class="btn btn-outline-success btn-next">I will read all eight instructions <br/>before beginning the task</button>
+                <!--<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button> -->
+              </div>
             </div>
           </div>
         </div>
@@ -89,9 +90,9 @@
                 </p>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
-                <button type="button" class="btn btn-outline-success btn-next">I have the tools with me</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-warning btn-prev">Go Back<br/></button>
+                <button type="button" id="proceed-btn2" class="btn btn-outline-success btn-next">I have the tools with me</button>
+                
               </div>
             </div>
           </div>
@@ -115,9 +116,9 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
-                <button type="button" class="btn btn-outline-success btn-next">I understand that I have to grant microphone
+                <button type="button" id="proceed-btn3" class="btn btn-outline-success btn-next">I understand that I have to <br/>grant microphone
                   access when prompted</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                
               </div>
             </div>
           </div>
@@ -133,8 +134,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               </div>
               <div class="modal-body">
-                <p>once you have found a youtub video you want to follow, copy the URL of your YouTube video <b> from the
-                    address bar at the top</b></p>
+                <p>once you have found a <b>HOW-TO VIDEO</b> on youtube that you want to follow, copy the URL of your YouTube
+                  video <b> from the address bar at the top</b></p>
                 <p>paste in the URL of the video you found in the interface and click (or say) “change video” </p>
                 <p>If the video changes and starts playing, say “stop”</p>
                 <p>If these steps worked, your microphone is working with the interface. If it does not work, please refresh
@@ -143,8 +144,8 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
-                <button type="button" class="btn btn-outline-success btn-next">I understand how to copy&paste my video</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="proceed-btn4" class="btn btn-outline-success btn-next">I understand how to <br/>copy&paste my video</button>
+                
               </div>
             </div>
           </div>
@@ -181,9 +182,9 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
-                <button type="button" class="btn btn-outline-success btn-next">I understand that I can freely express what
+                <button type="button" id="proceed-btn5" class="btn btn-outline-success btn-next">I understand that I can <br/>freely express what
                   I want</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                
               </div>
             </div>
           </div>
@@ -205,8 +206,8 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
-                <button type="button" class="btn btn-outline-success btn-next">I'm wearing my headset</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="proceed-btn6" class="btn btn-outline-success btn-next">I'm wearing my headset</button>
+                
               </div>
             </div>
           </div>
@@ -225,9 +226,9 @@
                 <p>Just find another video from YouTube and paste the URL. </p>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
-                <button type="button" class="btn btn-outline-success btn-next">I understand that I can pick different videos</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-warning btn-prev">Go Back<br/></button>
+                <button type="button" id="proceed-btn7" class="btn btn-outline-success btn-next">I understand that I can <br/>pick different videos</button>
+                
               </div>
             </div>
           </div>
@@ -246,6 +247,8 @@
                 <p> <b>Describe what you’re trying to do and why</b></p>
                 <p>You may pause, go back, skip, watch again, take as much time as you want to finish. </p>
 
+                <p>Remember you have to watch, learn, do with a <b>HOW-TO VIDEO</b></p>
+
                 <!--
                 <p>Go ahead open <a href="https://www.minsukchang.com/voiceyoutubedemo/ "> https://www.minsukchang.com/voiceyoutubedemo/
                   </a>and <a href="https://www.youtube.com">YouTube</a> to start learning and doing while watching the video!
@@ -254,7 +257,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
-                <button type="button" class="btn btn-outline-success" data-dismiss="modal">READY TO START!</button>
+                <button type="button" id="proceed-btn8" class="btn btn-outline-success" data-dismiss="modal">READY TO START!</button>
               </div>
             </div>
           </div>
@@ -270,6 +273,7 @@
     <h3>If you are ready to move on, click <b>"NEXT"</b> on usertesting.com.</h3>
   </div>
 
+
 </body>
 
 <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
@@ -280,9 +284,33 @@
   crossorigin="anonymous"></script>
 
 <script type="text/javascript">
+
   $('document').ready(function () {
     $('#myModal1').modal('show');
+
+    //setting a timer for activation for "next" buttons...
+    //sad but true 
+    
+    document.getElementById("proceed-btn").disabled = true;
+    setTimeout(function(){document.getElementById("proceed-btn").disabled = false;},5000);
+    document.getElementById("proceed-btn2").disabled = true;
+    setTimeout(function(){document.getElementById("proceed-btn2").disabled = false;},10000);
+    document.getElementById("proceed-btn2").disabled = true;
+    setTimeout(function(){document.getElementById("proceed-btn3").disabled = false;},20000);
+    document.getElementById("proceed-btn2").disabled = true;
+    setTimeout(function(){document.getElementById("proceed-btn4").disabled = false;},35000);
+    document.getElementById("proceed-btn2").disabled = true;
+    setTimeout(function(){document.getElementById("proceed-btn5").disabled = false;},55000);
+    document.getElementById("proceed-btn2").disabled = true;
+    setTimeout(function(){document.getElementById("proceed-btn6").disabled = false;},60000);
+    document.getElementById("proceed-btn2").disabled = true;
+    setTimeout(function(){document.getElementById("proceed-btn7").disabled = false;},70000);
+    document.getElementById("proceed-btn2").disabled = true;
+    setTimeout(function(){document.getElementById("proceed-btn8").disabled = false;},85000);
+
+
   });
+
 </script>
 
 </html>
