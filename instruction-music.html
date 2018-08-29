@@ -7,11 +7,14 @@
     <title> Instructions</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
+    <link rel="stylesheet" href="jquery-ui.css" />
     <style>
         /* Important part */
         .modal-dialog {
             overflow-y: initial !important
         }
+
+        .modal-content.ui-resizable {}
 
         .modal-body {
             height: 400px;
@@ -36,6 +39,12 @@
 
         .mytext {
             font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        }
+
+        .border {
+            border-width: 25px;
+            border-color: black;
+            border-style: solid;
         }
     </style>
 </head>
@@ -62,7 +71,8 @@
                                 <p> In this experiment, we want to see how using voice to navigate <b>HOW-TO VIDEOS</b> can
                                     help people learn to play musical instruments.</p>
                                 <p>There are total <b>NINE instructions</b>, Please read them all before diving into the
-                                    tasks</p>
+                                    tasks
+                                </p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" id="proceed-btn" class="btn btn-outline-success btn-next">I will read
@@ -80,7 +90,7 @@
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Instruction 2/9 - Getting the Tools Ready</h4>
+                                <h4 class="modal-title" id="myModalLabel">Instruction 2/9 - Your Instrument!</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
@@ -111,12 +121,12 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
-                                <p>When you visit our interface (Don't do it now) for the first time, it might give you a warning about certificate (privacy)
-                                    microphone access.
+                                <p>When you visit our interface (Don't do it now) for the first time, it might give you a
+                                    warning about certificate (privacy) microphone access.
                                 </p>
-                                <p>Please click “Advanced”, and click "proceed". We promise it's safe. 
-                                <p>Scroll Down for Demonstration<br/>
-                                    <img src="cert_error.gif" width="700" alt="allow microphone acess"> </p>
+                                <p>Please click “Advanced”, and click "proceed". We promise it's safe.
+                                    <p>Scroll Down for Demonstration<br/>
+                                        <img src="cert_error.gif" width="700" alt="allow microphone acess" class="border">                                        </p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
@@ -144,7 +154,7 @@
                                 </p>
                                 <p>Please click “ALLOW”. You will need this in order for the interface to listen to you.</p>
                                 <p>Scroll Down for Demonstration<br/>
-                                    <img src="mic-allow.gif" alt="allow microphone acess"> </p>
+                                    <img src="mic-allow.gif" alt="allow microphone acess" class="border"> </p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
@@ -169,11 +179,12 @@
                                 <p>once you have found a <b>HOW-TO VIDEO</b> on youtube that you want to follow, copy the
                                     URL of your YouTube video <b> from the address bar at the top</b></p>
                                 <p>paste in the URL of the video you found in the interface and click (or say) “change video”
-                                    </p>
+                                </p>
                                 <p>If the video changes and starts playing, say “stop”</p>
                                 <p>If these steps worked, your microphone is working with the interface. If it does not work,
                                     please refresh the page, and follow the steps 3 and 4 again.</p>
-                                <p> Scroll Down for Demonstration<br/> <img src="url-cap.gif" alt="allow microphone acess"> </p>
+                                <p> Scroll Down for Demonstration<br/> <img src="url-cap.gif" alt="allow microphone acess"
+                                        class="border"> </p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
@@ -259,7 +270,8 @@
                             </div>
                             <div class="modal-body">
                                 <p>Feel free to pick another video, if first video is not good for you at any point in the
-                                    study.</p>
+                                    study.
+                                </p>
                                 <p>Just find another video from YouTube and paste the URL. </p>
                             </div>
                             <div class="modal-footer">
@@ -285,7 +297,8 @@
                                 <p> <b>Describe what you’re trying to do and why</b></p>
                                 <p>You may pause, go back, skip, watch again, take as much time as you want to finish. </p>
 
-                                <p>Remember you have to watch, learn, do with a <b>HOW-TO VIDEO</b>, and make sure you have your instrument ready with you!</p>
+                                <p>Remember you have to watch, learn, do with a <b>HOW-TO VIDEO</b>, and make sure you have
+                                    your instrument ready with you!</p>
 
                                 <!--
                 <p>Go ahead open <a href="https://www.minsukchang.com/voiceyoutubedemo/ "> https://www.minsukchang.com/voiceyoutubedemo/
@@ -316,6 +329,7 @@
 </body>
 
 <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="jquery-ui.js"></script>
 <script type="text/javascript" src="script.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
@@ -348,7 +362,15 @@
         setTimeout(function () { document.getElementById("proceed-btn8").disabled = false; }, 85000);
 
 
+
     });
+    $('.modal-content').resizable({
+        alsoResize: ".modal-dialog",
+        minHeight: 500,
+        minWidth: 500
+    });
+
+    $('.modal-dialog').draggable()
 
 </script>
 
