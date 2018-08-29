@@ -338,7 +338,16 @@
 
 <script type="text/javascript">
 
+
     $('document').ready(function () {
+        $('.modal-content').resizable({
+            alsoResize: ".modal-dialog",
+            minHeight: 500,
+            minWidth: 500
+        });
+
+        $('.modal-dialog').draggable()
+
         $('#myModal1').modal('show');
 
         //setting a timer for activation for "next" buttons...
@@ -364,13 +373,7 @@
 
 
     });
-    $('.modal-content').resizable({
-        alsoResize: ".modal-dialog",
-        minHeight: 500,
-        minWidth: 500
-    });
 
-    $('.modal-dialog').draggable()
 
 </script>
 
