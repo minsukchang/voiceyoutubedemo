@@ -87,31 +87,36 @@ recognition.onresult = function (event) {
   var idx;
   var nnumber;
   var flag=0;
+
   skipping: if (transcript.indexOf("skip") != -1) {
     //console.log(transcript);
     ccommand = transcript.split(" ");
     //console.log(ccommand);
-    if (transcript.indexOf("minutes")) {
+    if (transcript.indexOf("minutes") != -1) {
       idx = ccommand.indexOf("minutes") - 1;
       flag=1;
-    } else if (transcript.indexOf("minute")) {
+    } else if (transcript.indexOf("minute")!= -1) {
+      //console.log("asdasd" + transcript.indexOf("minute"));
+      //console.log("asdasdasdasd" + ccommand.indexOf("minute"));
       idx = ccommand.indexOf("minute") - 1;
       flag=1;
-    } else if (transcript.indexOf("seconds")) {
+    } else if (transcript.indexOf("seconds")!= -1) {
       idx = ccommand.indexOf("seconds") - 1;
-    } else if (transcript.indexOf("second")) {
+    } else if (transcript.indexOf("second")!= -1) {
       idx = ccommand.indexOf("second") - 1;
     } else {
       break skipping;
     }
+    //console.log(idx);
     //console.log("how much to jump: " + ccommand[idx]);
     
-    if (parseInt(nnumber) == NaN){
-      nnumber = text2num(ccommand[idx]);      
-    } 
-    nnumber = parseInt(ccommand[idx]);
+    if (isNumeric(ccommand[idx]) == false){
+      nnumber = text2num(ccommand[idx]);    
+    } else{
+      nnumber = parseInt(ccommand[idx]);
+    }
 
-    //console.log("number of minutes or seconds: " + nnumber);
+    console.log("number of minutes or seconds: " + nnumber);
     if (flag==1){
       document.getElementById('skip-btn').value = 60 * nnumber;
     } else{
@@ -122,31 +127,33 @@ recognition.onresult = function (event) {
     refresh();
   }
 
-  rewind: if (transcript.indexOf("go back") != -1) {
+  rewind: if ((transcript.indexOf("go") != -1) && (transcript.indexOf("back") != -1)) {
     //console.log(transcript);
     ccommand = transcript.split(" ");
     //console.log(ccommand);
-    if (transcript.indexOf("minutes")) {
+    if (transcript.indexOf("minutes")!= -1) {
       idx = ccommand.indexOf("minutes") - 1;
       flag=1;
-    } else if (transcript.indexOf("minute")) {
+    } else if (transcript.indexOf("minute")!= -1) {
       idx = ccommand.indexOf("minute") - 1;
       flag=1;
-    } else if (transcript.indexOf("seconds")) {
+    } else if (transcript.indexOf("seconds")!= -1) {
       idx = ccommand.indexOf("seconds") - 1;
-    } else if (transcript.indexOf("second")) {
+    } else if (transcript.indexOf("second")!= -1) {
       idx = ccommand.indexOf("second") - 1;
     } else {
       break rewind;
     }
     //console.log("how much to jump: " + ccommand[idx]);
-    
-    if (parseInt(nnumber) == NaN){
+  
+    if (isNumeric(ccommand[idx]) == false){
       nnumber = text2num(ccommand[idx]);      
-    } 
-    nnumber = parseInt(ccommand[idx]);
+    } else{
+      nnumber = parseInt(ccommand[idx]);
+    }
+    
 
-    //console.log("number of minutes or seconds: " + nnumber);
+    console.log("number of minutes or seconds: " + nnumber);
     if (flag==1){
       document.getElementById('back-btn').value = 60 * nnumber;
     } else{
