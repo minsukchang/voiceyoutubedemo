@@ -11,13 +11,15 @@
     <style>
         /* Important part */
         .modal-dialog {
-            overflow-y: initial !important
+            overflow-y: initial;
         }
 
-        .modal-content.ui-resizable {}
+        .modal-content.ui-resizable {
+            overflow: scroll;
+        }
 
         .modal-body {
-            height: 400px;
+            height: 600px ; 
             overflow-y: auto;
         }
 
@@ -70,8 +72,9 @@
 
                                 <p> In this experiment, we want to see how using voice to navigate <b>HOW-TO VIDEOS</b> can
                                     help people learn to play musical instruments.</p>
-                                <p>There are total <b>NINE instructions</b>, Please read them all before diving into the
-                                    tasks
+                                <p> Some of them are long, but it's <b>very important that you read them carefully to understand exactly what we want you to do.</b> </p>
+                                <p style="color:red"> So please read all of them very carefully. </p>
+                                <p>There are total <b>NINE instructions</b>, please read them all before diving into the tasks
                                 </p>
                             </div>
                             <div class="modal-footer">
@@ -87,7 +90,7 @@
 
                 <!-- Modal -->
                 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
+                    <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="myModalLabel">Instruction 2/9 - Your Instrument!</h4>
@@ -99,13 +102,12 @@
                                 <p>So please have your instrument ready at your hands, so you can follow the video while
                                     doing the tasks.</p>
                                 <p>
-                                    Do you have your instrument with you now?
+                                    Do you have your instrument with you now? Play it and let us hear it! :)
                                 </p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back<br/></button>
-                                <button type="button" id="proceed-btn2" class="btn btn-outline-success btn-next">I have it
-                                    with me</button>
+                                <button type="button" id="proceed-btn2" class="btn btn-outline-success btn-next">I have it with me</button>
 
                             </div>
                         </div>
@@ -114,19 +116,20 @@
 
                 <!-- Modal -->
                 <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
+                    <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Instruction 3/9 - Allowing Microphone Access</h4>
+                                <h4 class="modal-title" id="myModalLabel">Instruction 3/9 - Certificate Error</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
                                 <p>When you visit our interface (Don't do it now) for the first time, it might give you a
-                                    warning about certificate (privacy) microphone access.
+                                    warning about certificate (privacy) error.
                                 </p>
-                                <p>Please click “Advanced”, and click "proceed". We promise it's safe.
+                                <p>It's an issue on our end, and we promise it's safe. </p>
+                                <p>Please click “Advanced”, and click "Proceed to minsukchang.com (unsafe)".
                                     <p>Scroll Down for Demonstration<br/>
-                                        <img src="cert_error.gif" width="700" alt="allow microphone acess" class="border">                                        </p>
+                                        <img src="cert_error.gif" width="700" alt="certifcate error" class="border">                                        </p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
@@ -142,7 +145,7 @@
 
                 <!-- Modal -->
                 <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
+                    <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="myModalLabel">Instruction 4/9 - Allowing Microphone Access</h4>
@@ -169,7 +172,7 @@
 
                 <!-- Modal -->
                 <div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
+                    <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="myModalLabel">Instruction 5/9 - Getting My Video in the Interface</h4>
@@ -198,24 +201,24 @@
 
                 <!-- Modal -->
                 <div class="modal fade" id="myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
+                    <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="myModalLabel">Instruction 6/9 - Interface Functions</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
+                                <h3>THIS IS THE MOST IMPORTANT INSTRUCTION!!</h3>
+                                <p> On the interface, you can control the video using voice. We are deliberately not telling you the exact commands, because we want to see how YOU navigate the video and how YOU say them</p>
 
-                                <p> On the interface, you can control the video using voice, play, pause, stop, go back or
-                                    skip by a few seconds or minutes, and more. </p>
                                 <p> At any point if you think the interface is not listening to you, you can click on the
                                     “start listening again” button.</p>
                                 <p>
                                     If the interface does not support what you want to do, say it how you want to be able to say. And carry out the task using
-                                    mouse, keyboard, or voice. THIS IS HYPOTHETICAL, SO DON'T WORRY ABOUT SAYING IT IN A
-                                    WAY A SYSTEM WOULD UNDERSTAND. Just say HOW YOU want to say it.
+                                    mouse, keyboard, or voice. <b>THIS IS HYPOTHETICAL, SO DON'T WORRY ABOUT SAYING IT IN A
+                                    WAY A SYSTEM WOULD UNDERSTAND.</b> Just say <b>HOW YOU </b> want to say it.
                                 </p>
-                                <p>
+                                <p style="color:red">
                                     Example.
                                     <ul>
                                         <li>my need: "I want to see the beginning of the step, because I want to check if
@@ -238,7 +241,7 @@
 
                 <!-- Modal -->
                 <div class="modal fade" id="myModal7" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
+                    <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="myModalLabel">Instruction 7/9 - Wearing a Headset</h4>
@@ -262,7 +265,7 @@
 
                 <!-- Modal -->
                 <div class="modal fade" id="myModal8" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
+                    <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="myModalLabel">Instruction 8/9 - Picking a Different Video</h4>
@@ -286,7 +289,7 @@
 
                 <!-- Modal -->
                 <div class="modal fade" id="myModal9" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
+                    <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="myModalLabel">Instruction 9/9 - THINKING ALOUD</h4>
@@ -298,7 +301,8 @@
                                 <p>You may pause, go back, skip, watch again, take as much time as you want to finish. </p>
 
                                 <p>Remember you have to watch, learn, do with a <b>HOW-TO VIDEO</b>, and make sure you have
-                                    your instrument ready with you!</p>
+                                    <b> your instrument ready with you!</b></p>
+
 
                                 <!--
                 <p>Go ahead open <a href="https://www.minsukchang.com/voiceyoutubedemo/ "> https://www.minsukchang.com/voiceyoutubedemo/
@@ -341,9 +345,9 @@
 
     $('document').ready(function () {
         $('.modal-content').resizable({
-            alsoResize: ".modal-dialog",
-            minHeight: 500,
-            minWidth: 500
+            alsoResize: ".modal-dialog"
+            //minHeight: 500,
+            //minWidth: 500
         });
 
         $('.modal-dialog').draggable()
@@ -353,28 +357,24 @@
         //setting a timer for activation for "next" buttons...
         //sad but true 
 
-        document.getElementById("proceed-btn").disabled = true;
-        setTimeout(function () { document.getElementById("proceed-btn").disabled = false; }, 5000);
-        document.getElementById("proceed-btn2").disabled = true;
-        setTimeout(function () { document.getElementById("proceed-btn2").disabled = false; }, 10000);
-        document.getElementById("proceed-btn2").disabled = true;
-        setTimeout(function () { document.getElementById("proceed-btn3").disabled = false; }, 20000);
-        document.getElementById("proceed-btn2").disabled = true;
-        setTimeout(function () { document.getElementById("proceed-btn4").disabled = false; }, 35000);
-        document.getElementById("proceed-btn2").disabled = true;
-        setTimeout(function () { document.getElementById("proceed-btn5").disabled = false; }, 55000);
-        document.getElementById("proceed-btn2").disabled = true;
-        setTimeout(function () { document.getElementById("proceed-btn6").disabled = false; }, 60000);
-        document.getElementById("proceed-btn2").disabled = true;
-        setTimeout(function () { document.getElementById("proceed-btn7").disabled = false; }, 70000);
-        document.getElementById("proceed-btn2").disabled = true;
-        setTimeout(function () { document.getElementById("proceed-btn8").disabled = false; }, 85000);
-
-
+        // document.getElementById("proceed-btn").disabled = true;
+        // setTimeout(function () { document.getElementById("proceed-btn").disabled = false; }, 5000);
+        // document.getElementById("proceed-btn2").disabled = true;
+        // setTimeout(function () { document.getElementById("proceed-btn2").disabled = false; }, 10000);
+        // document.getElementById("proceed-btn2").disabled = true;
+        // setTimeout(function () { document.getElementById("proceed-btn3").disabled = false; }, 20000);
+        // document.getElementById("proceed-btn2").disabled = true;
+        // setTimeout(function () { document.getElementById("proceed-btn4").disabled = false; }, 35000);
+        // document.getElementById("proceed-btn2").disabled = true;
+        // setTimeout(function () { document.getElementById("proceed-btn5").disabled = false; }, 55000);
+        // document.getElementById("proceed-btn2").disabled = true;
+        // setTimeout(function () { document.getElementById("proceed-btn6").disabled = false; }, 60000);
+        // document.getElementById("proceed-btn2").disabled = true;
+        // setTimeout(function () { document.getElementById("proceed-btn7").disabled = false; }, 70000);
+        // document.getElementById("proceed-btn2").disabled = true;
+        // setTimeout(function () { document.getElementById("proceed-btn8").disabled = false; }, 85000);
 
     });
-
-
 </script>
 
 </html>

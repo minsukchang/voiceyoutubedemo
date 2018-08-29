@@ -48,7 +48,6 @@ $("div[id^='myModal']").each(function () {
     currentModal.find('.btn-next').click(function () {
         currentModal.modal('hide');
         currentModal.closest("div[id^='myModal']").nextAll("div[id^='myModal']").first().modal('show');
-
     });
 
     //click prev
