@@ -88,7 +88,7 @@ recognition.onresult = function (event) {
   var nnumber;
   var flag=0;
 
-  skipping: if (transcript.indexOf("skip") != -1) {
+  skipping: if (((transcript.indexOf("fast forward") != -1) ) || (transcript.indexOf("skip") != -1) || ((transcript.indexOf("fast") != -1) && (transcript.indexOf("forward") != -1) ) ) {
     //console.log(transcript);
     ccommand = transcript.split(" ");
     //console.log(ccommand);
@@ -127,7 +127,7 @@ recognition.onresult = function (event) {
     refresh();
   }
 
-  rewind: if ((transcript.indexOf("go") != -1) && (transcript.indexOf("back") != -1)) {
+  rewind: if ( transcript.indexOf("rewind") != -1) || ((transcript.indexOf("go") != -1) && (transcript.indexOf("back") != -1)) {
     //console.log(transcript);
     ccommand = transcript.split(" ");
     //console.log(ccommand);
