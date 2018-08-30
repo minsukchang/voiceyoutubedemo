@@ -94,7 +94,7 @@ $('#change-btn').on('click', function () {
 
     //var x = new String(id)
     player.loadVideoById(id);
-    $('#checkModal').modal('show');
+    //$('#checkModal').modal('show');
 
 });
 
