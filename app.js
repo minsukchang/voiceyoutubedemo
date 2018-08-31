@@ -127,7 +127,7 @@ recognition.onresult = function (event) {
     refresh();
   }
 
-  rewind: if ( transcript.indexOf("rewind") != -1) || ((transcript.indexOf("go") != -1) && (transcript.indexOf("back") != -1)) {
+  rewind: if ((transcript.indexOf("rewind") != -1) || ((transcript.indexOf("go") != -1) && (transcript.indexOf("back") != -1))) {
     //console.log(transcript);
     ccommand = transcript.split(" ");
     //console.log(ccommand);
