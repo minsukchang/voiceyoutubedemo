@@ -17,7 +17,16 @@
       height: 400px;
       overflow-y: auto;
     }
-  </style>
+    #overlay {
+      width: 640px;
+      height: 385px;
+      position: fixed;
+      left: 200px; /* document.getElementById("video-placeholder").offsetLeft */
+      top: 100px; /* document.getElementById("video-placeholder").offsetTop */
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.3);
+    }
+</style>
 </head>
 
 <body>
@@ -44,6 +53,15 @@
     </div>
   </div>
 
+  <div class="row" id="overlay">
+  <!--
+    this is where we put the overlay content
+    should be a grid
+    and each grid use be selectable - via voice (mouse?)
+  -->
+  </div>
+
+
   <div class="row">
     <div class="mx-auto" style="width: 640px;" id="video-placeholder"> </div>
   </div>
@@ -56,6 +74,8 @@
         <br>
         <button class="btn btn-primary" type="button" id="start-btn" name="button">START LISTENING AGAIN</button>
         <button type="button" id="pause-btn" name="button" hidden>pause</button>
+
+        <button class="btn btn-primary" type="button" id="overlay-btn" name="button" >OVERLAY</button>
 
         <button type="button" id="play" name="button" hidden>PLAY</button>
         <button type="button" id="pause" name="button" hidden>PAUSE</button>
@@ -111,10 +131,6 @@
               </div>
             </div>
           -->
-
-
-
-
       </div>
     </div>
   </div>

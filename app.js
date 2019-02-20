@@ -191,7 +191,6 @@ recognition.onresult = function (event) {
   }
 };
 
-
 recognition.onstart = function () {
   instructions.text('Voice recognition activated. Try speaking into the microphone.');
   instructions.css('color', 'lightgreen');
@@ -224,8 +223,19 @@ function refresh() {
 
   }, 1000);
   //console.log('Restarted...');
+}
 
-
+function showOverlay(){
+  var leftmargin = document.getElementById("video-placeholder").offsetLeft;
+  var topmargin = document.getElementById("video-placeholder").offsetTop;
+  
+  
+  //console.log(leftmargin);
+  //console.log(topmargin);
+  var overlay = document.getElementById("overlay");
+  overlay.style.left = leftmargin+13+'px';
+  overlay.style.top = topmargin+'px';
+  //document.getElementById("overlay").rgba = rgba(0, 0, 0, 0.3);
 }
 
 $('#start-btn').on('click', function (e) {
@@ -239,12 +249,13 @@ $('#start-btn').on('click', function (e) {
 
 noteTextarea.on('input', function () {
   noteContent = $(this).val();
-})
+});
 
 $('#pause-btn').on('click', function (e) {
   recognition.abort();
   //console.log('Voice recognition paused.');
 });
+
 
 
 //chars to numbers
@@ -323,3 +334,6 @@ function feach(w) {
 function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
+
+
+//https://jsfiddle.net/carmijoon/pZbkX/ WOOHOO!!
