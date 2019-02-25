@@ -4,7 +4,7 @@ try {
   recognition.start();
 }
 catch (e) {
-  //console.error(e);
+  console.error(e);
   refresh();
 }
 
