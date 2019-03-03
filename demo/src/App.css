@@ -45,9 +45,13 @@
 }
 
 .container-wrapper {
-  padding-top: 8px;
   max-width: 80%;
   margin: auto;
+}
+
+.container-wrapper > div {
+  padding: 1px 0px;
+  margin-top: 1px;
 }
 
 .container-video {
@@ -76,4 +80,16 @@
 
 .container-video div:not(.overflow) {
   z-index: 1;
+}
+
+.progressBar {
+  position: relative;
+}
+
+.bookmark-tip {
+  position: absolute;
+  width: 3px;
+  height: 1.75em;
+  background: red;
+  z-index: 1000;
 }
