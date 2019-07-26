@@ -3,6 +3,7 @@ import YouTube from 'react-youtube';
 import SpeechRecognition from 'react-speech-recognition';
 import { Header, Input, Form, Button, Progress, Dimmer, Loader } from 'semantic-ui-react';
 import './App.css';
+import subtitle from './subtitle.json';
 
 class App extends Component {
   constructor(props) {
@@ -28,6 +29,7 @@ class App extends Component {
   componentDidMount() {
     const { recognition, stopListening } = this.props;
     recognition.lang = 'en-US';
+    console.log(subtitle)
   }
 
   getQueryVariable(url, variable) {
@@ -64,6 +66,9 @@ class App extends Component {
 
   _onStateChange(event) {
     const { duration } = this.state;
+    this.setState({
+      videoState: event.target.getPlayerState(),
+    })
     if (duration != event.target.getDuration())
       this.setState({
         duration: event.target.getDuration(),
@@ -110,6 +115,9 @@ class App extends Component {
         videoTarget.seekTo(bookmark[idx]);
       }
     }
+    else if (arr.includes('find')) {
+      this.findWord(arr[1]);
+    }
     resetTranscript();
     stopListening();
     // else if ([''])
@@ -123,12 +131,28 @@ class App extends Component {
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
-  handleSubmit = () => this.setState({videoId: this.getQueryVariable(this.state.url,'v'), url: '' })
+  handleSubmit() {
+    const videoId = this.getQueryVariable(this.state.url,'v');
+    this.setState({videoId: videoId, url: '' })
+  }
+
+  findWord(word) {
+    const { currentTime } = this.state;
+    let previousTimeArray = []; // array to store timestamps in which word appeared before the current time
+    let futureTimeArray = []; // array to store timestamps in which word appears ahead of the current time
+    for (let i = 0; i<subtitle.length; i++) {
+      let endTime = subtitle[i].end;
+      let content = subtitle[i].content;
+      if (content.includes(word)) {
+        currentTime < endTime ? previousTimeArray.push(subtitle[i]) : futureTimeArray.push(subtitle[i]);
+      }
+    }
+    console.log(previousTimeArray, futureTimeArray);
+  }
 
   render() {
     const { transcript, listening } = this.props;
-    const { videoId, url, duration, currentTime, videoTarget, bookmark } = this.state;
-    const videoState = videoTarget ? videoTarget.getPlayerState() : null;
+    const { videoId, url, duration, currentTime, videoTarget, bookmark, videoState } = this.state;
     // if (videoState && videoState === 5 && videoTarget.getDuration() != duration) {
     //   this.setState({duration: videoTarget.getDuration()})
     // }
