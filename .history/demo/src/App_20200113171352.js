@@ -4,7 +4,6 @@ import SpeechRecognition from 'react-speech-recognition';
 import { Header, Input, Form, Button, Progress, Dimmer, Loader } from 'semantic-ui-react';
 import './App.css';
 import subtitle from './subtitle.json';
-import axios from 'axios';
 
 class App extends Component {
   constructor(props) {

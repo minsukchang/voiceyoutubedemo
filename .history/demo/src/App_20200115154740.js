@@ -58,6 +58,7 @@ class App extends Component {
     this.setState({
       updateInterval: updateInterval
     })
+    axios.
   }
 
   _onPause() {
