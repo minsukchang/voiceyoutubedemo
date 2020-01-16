@@ -5,26 +5,32 @@ from django.contrib.postgres.fields import ArrayField
 # Create your models here.
 
 class Session(models.Model):
-    sessionID = models.TextField(blank=True)
-    # pauses = ArrayField(
-    #     models.TimeField(blank=True),
-    #     blank=True
-    # )
-    # transcripts = ArrayField(
-    #     ArrayField(
-    #         models.TextField(blank=True),
-    #         blank=True
-    #     ),
-    #     blank=True
-    # )
-    # transcript_times = ArrayField(
-    #     ArrayField(
-    #         models.TimeField(blank=True),
-    #         blank=True
-    #     ),
-    #     blank=True
-    # )
-    # bookmarks = ArrayField(
-    #     models.TimeField(blank=True),
-    #         blank=True
-    # )
+    # sessionID = models.TextField()
+    pauses = ArrayField(
+        models.TextField(blank=True, default="13:20"),
+        null=True,
+        blank=True,
+    )
+    transcripts = ArrayField(
+        ArrayField(
+            models.TextField(blank=True),
+            null=True,
+            blank=True
+        ),
+        null=True,
+        blank=True,
+    )
+    transcript_times = ArrayField(
+        ArrayField(
+            models.TimeField(blank=True),
+            null=True,
+            blank=True
+        ),
+        null=True,
+        blank=True,
+    )
+    bookmarks = ArrayField(
+        models.TimeField(blank=True),
+        null=True,
+        blank=True,
+    )
