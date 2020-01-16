@@ -7,7 +7,7 @@ from django.contrib.postgres.fields import ArrayField
 class Session(models.Model):
     # sessionID = models.TextField()
     pauses = ArrayField(
-        models.TextField(blank=True, default="13:20"),
+        models.TimeField(blank=True),
         null=True,
         blank=True,
     )

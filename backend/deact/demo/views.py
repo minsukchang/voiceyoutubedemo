@@ -2,6 +2,12 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status, viewsets
 from rest_framework.decorators import api_view
+from rest_framework.status import (
+    HTTP_400_BAD_REQUEST,
+    HTTP_404_NOT_FOUND,
+    HTTP_200_OK
+)
+from rest_framework.decorators import action
 
 from demo.models import Session 
 from demo.serializers import SessionSerializer
@@ -52,4 +58,14 @@ class SessionViewSet(viewsets.ModelViewSet):
 
     def partial_update(self, request, *args, **kwargs):
         kwargs['partial'] = True
-        return self.update(request, *args, **kwargs)        
+        return self.update(request, *args, **kwargs)      
+
+#is this needed
+    @action(detail=True, methods=['post'], name='add pause')
+    def add_pause(self, request, pk=None):
+        session = self.get_object()
+        print('the request time data is ', request.data['time'])
+        session.pauses.append(request.data['time'])
+        # session.add_pause(request.data['time'])
+        session.save()
+        return Response({'status': 'pause added'})
