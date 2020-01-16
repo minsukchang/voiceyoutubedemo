@@ -9,6 +9,12 @@ import axios from 'axios';
 
 // Helper Functions
 
+
+const sessionID = parseInt(sessionStorage.getItem('sessionID')) || parseInt(localStorage.getItem('last_sessionID'))+1 || 1;
+sessionStorage.setItem('sessionID', sessionID);
+localStorage.setItem('last_sessionID', sessionID);
+console.log('sessionID is ', sessionID)
+
 function formatTime(time) {
   time = Math.round(time);
 
@@ -40,11 +46,21 @@ class App extends Component {
     this.onClickHandler = this.onClickHandler.bind(this);
     this._onReady = this._onReady.bind(this);
     this.onListenHandler = this.onListenHandler.bind(this);
+
   }
+
+  
   componentDidMount() {
     const { recognition, stopListening } = this.props;
     recognition.lang = 'en-US';
     console.log(subtitle)
+    if (sessionStorage.getItem('sessionCreated') === null) {
+      axios.post('http://127.0.0.1:8000/sessions/', {
+        sessionID: sessionID,
+      });
+      sessionStorage.setItem('sessionCreated', true)
+      console.log('new session created')
+    }
   }
 
   getQueryVariable(url, variable) {
@@ -78,6 +94,7 @@ class App extends Component {
     const { updateInterval } = this.state;
     clearInterval(updateInterval);
     axios.post('http://127.0.0.1:8000/sessions/'+'1/'+'add_pause/', {
+      sessionID: sessionID,
       time: formatTime(event.target.getCurrentTime())
     });
     console.log('pause time is ', formatTime(event.target.getCurrentTime()))
@@ -112,6 +129,7 @@ class App extends Component {
   onTranscriptHandler(transcript) {
     const { resetTranscript, stopListening } = this.props;
     axios.post('http://127.0.0.1:8000/sessions/'+'1/'+'add_transcript/', {
+        sessionID: sessionID,
         time: formatTime(this.state.currentTime),
         transcript: transcript
       });
@@ -123,6 +141,7 @@ class App extends Component {
       bookmark.sort();
       this.setState({bookmark: bookmark});
       axios.post('http://127.0.0.1:8000/sessions/'+'1/'+'add_bookmark/', {
+        sessionID: sessionID,
         time: formatTime(currentTime)
       });
       console.log('bookmark time is ', formatTime(currentTime))
