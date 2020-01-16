@@ -6,6 +6,20 @@ import './App.css';
 import subtitle from './subtitle.json';
 import axios from 'axios';
 
+
+// Helper Functions
+
+function formatTime(time) {
+  time = Math.round(time);
+
+  var minutes = Math.floor(time / 60),
+      seconds = time - minutes * 60;
+
+  seconds = seconds < 10 ? '0' + seconds : seconds;
+
+  return minutes + ":" + seconds;
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -60,9 +74,13 @@ class App extends Component {
     })
   }
 
-  _onPause() {
+  _onPause(event) {
     const { updateInterval } = this.state;
     clearInterval(updateInterval);
+    axios.post('http://127.0.0.1:8000/sessions/'+'1/'+'add_pause/', {
+      time: formatTime(event.target.getCurrentTime())
+    });
+    console.log('pause time is ', formatTime(event.target.getCurrentTime()))
   }
 
   _onStateChange(event) {
@@ -93,12 +111,21 @@ class App extends Component {
 
   onTranscriptHandler(transcript) {
     const { resetTranscript, stopListening } = this.props;
+    axios.post('http://127.0.0.1:8000/sessions/'+'1/'+'add_transcript/', {
+        time: formatTime(this.state.currentTime),
+        transcript: transcript
+      });
+    console.log('transcript is ', transcript)
     const arr = transcript.split(" ");
     if (['add', 'bookmark'].every(val => arr.includes(val))) {
       const { currentTime, bookmark } = this.state;
       bookmark.push(currentTime);
       bookmark.sort();
       this.setState({bookmark: bookmark});
+      axios.post('http://127.0.0.1:8000/sessions/'+'1/'+'add_bookmark/', {
+        time: formatTime(currentTime)
+      });
+      console.log('bookmark time is ', formatTime(currentTime))
     }
     else if (['go', 'bookmark'].every(val => arr.includes(val))) {
       console.log('go bookmark', arr)
