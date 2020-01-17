@@ -9,12 +9,6 @@ import axios from 'axios';
 
 // Helper Functions
 
-
-// const sessionID = parseInt(sessionStorage.getItem('sessionID')) || parseInt(localStorage.getItem('last_sessionID'))+1 || 1;
-// sessionStorage.setItem('sessionID', sessionID);
-// localStorage.setItem('last_sessionID', sessionID);
-// console.log('sessionID is ', sessionID)
-
 function formatTime(time) {
   time = Math.round(time);
 
@@ -35,8 +29,10 @@ class App extends Component {
       url: '',
       duration: 0,
       currentTime: 0,
+      transcriptTime: 3,
+      previousTranscript: '',
       videoTarget: null,
-      bookmark: [5, 80, 250],
+      bookmarks: [5, 80, 250],
     }
     this._onPlay = this._onPlay.bind(this);
     this._onPause = this._onPause.bind(this);
@@ -119,57 +115,83 @@ class App extends Component {
 
   onListenHandler() {
     console.log('listen handler called')
-    const { listening, transcript, startListening } = this.props;
+    const { listening, startListening, stopListening, resetTranscript } = this.props;
+    
     if (listening) {
       console.log('stop listening')
-      this.onTranscriptHandler(transcript);
+      resetTranscript();
+      this.setState({previousTranscript: '', transcriptTime: 3});
+      clearInterval(this.state.transcriptInterval);
+      stopListening();
     }
     else {
       console.log('start listening')
       startListening();
+      const transcriptInterval = setInterval(() => {
+        const listening = this.props.listening
+        if(listening && this.state.transcriptTime){
+          this.setState({transcriptTime: this.state.transcriptTime - 1});
+          console.log('waiting for transcription', this.state.transcriptTime);
+        }
+        else{
+          const transcript = this.props.transcript
+          this.onTranscriptHandler(transcript);
+          this.setState({transcriptTime: 3});
+          console.log('reset transcriptionTimer')
+        }     
+      }, 1000);
+      this.setState({transcriptInterval: transcriptInterval});
     }
   }
 
   onTranscriptHandler(transcript) {
-    const { resetTranscript, stopListening } = this.props;
-    axios.post('http://127.0.0.1:8000/sessions/'+sessionStorage.getItem('sessionID')+'/add_transcript/', {
+    const { resetTranscript } = this.props;
+    console.log('transcript is: ', transcript, this.state.previousTranscript)
+    //update previousTranscript and wait for more
+    if(transcript !== this.state.previousTranscript){
+      this.setState({previousTranscript: transcript});
+    }
+    //reset previousTranscript and Transcript and process
+    else if(transcript !== ''){
+      axios.post('http://127.0.0.1:8000/sessions/'+sessionStorage.getItem('sessionID')+'/add_transcript/', {
         time: formatTime(this.state.currentTime),
         transcript: transcript
       });
-    console.log('transcript is ', transcript)
-    const arr = transcript.split(" ");
-    if (['add', 'bookmark'].every(val => arr.includes(val))) {
-      const { currentTime, bookmark } = this.state;
-      bookmark.push(currentTime);
-      bookmark.sort();
-      this.setState({bookmark: bookmark});
-      axios.post('http://127.0.0.1:8000/sessions/'+sessionStorage.getItem('sessionID')+'/add_bookmark/', {
-        time: formatTime(currentTime)
-      });
-      console.log('bookmark time is ', formatTime(currentTime))
-    }
-    else if (['go', 'bookmark'].every(val => arr.includes(val))) {
-      console.log('go bookmark', arr)
-      const { videoTarget, bookmark, currentTime } = this.state;
-      let idx = 0;
-      while(bookmark[++idx] < currentTime);
-      idx--;
-      if (idx===0 && bookmark[0] > currentTime) idx=-1;
-      console.log('next bookmark', idx, bookmark, bookmark[idx])
-      if (arr.includes('next') && bookmark.length>idx) {
-        console.log('next bookmark', idx, bookmark, bookmark[idx])
-        videoTarget.seekTo(bookmark[idx+1]);
+      console.log('save transcript', transcript)
+      const arr = transcript.split(" ");
+      if (['add', 'bookmark'].every(val => arr.includes(val))) {
+        const { currentTime, bookmarks } = this.state;
+        bookmarks.push(currentTime);
+        bookmarks.sort();
+        this.setState({bookmarks: bookmarks});
+        axios.post('http://127.0.0.1:8000/sessions/'+sessionStorage.getItem('sessionID')+'/add_bookmark/', {
+          time: formatTime(currentTime)
+        });
+        console.log('bookmark time is ', formatTime(currentTime))
       }
-      else if (arr.includes('previous') && bookmark.length>0 && bookmark[idx]<currentTime) {
-        videoTarget.seekTo(bookmark[idx]);
+      else if (['go', 'bookmark'].every(val => arr.includes(val))) {
+        console.log('go bookmark', arr)
+        const { videoTarget, bookmarks, currentTime } = this.state;
+        let idx = 0;
+        while(bookmarks[++idx] < currentTime);
+        idx--;
+        if (idx===0 && bookmarks[0] > currentTime) idx=-1;
+        console.log('next bookmark', idx, bookmarks, bookmarks[idx])
+        if (arr.includes('next') && bookmarks.length>idx) {
+          console.log('next bookmark', idx, bookmarks, bookmarks[idx])
+          videoTarget.seekTo(bookmarks[idx+1]);
+        }
+        else if (arr.includes('previous') && bookmarks.length>0 && bookmarks[idx]<currentTime) {
+          videoTarget.seekTo(bookmarks[idx]);
+        }
       }
+      else if (arr.includes('find')) {
+        this.findWord(arr[1]);
+      }
+      resetTranscript();
+      this.setState({previousTranscript: ''})
     }
-    else if (arr.includes('find')) {
-      this.findWord(arr[1]);
-    }
-    resetTranscript();
-    stopListening();
-    // else if ([''])
+    
   }
 
   onClickHandler() {
@@ -201,7 +223,7 @@ class App extends Component {
 
   render() {
     const { transcript, listening } = this.props;
-    const { videoId, url, duration, currentTime, videoTarget, bookmark, videoState } = this.state;
+    const { videoId, url, duration, currentTime, videoTarget, bookmarks, videoState } = this.state;
     // if (videoState && videoState === 5 && videoTarget.getDuration() != duration) {
     //   this.setState({duration: videoTarget.getDuration()})
     // }
@@ -242,7 +264,7 @@ class App extends Component {
             <Button onClick={this.onListenHandler} secondary>{listening ? "Stop Listening" : "Start Listening"}</Button>
           </div>
           <div className="progressBar">
-            {bookmark.map((value) => <div className="bookmark-tip" key={value} style={{left: value/duration*100+"%"}}/>)}
+            {bookmarks.map((value) => <div className="bookmark-tip" key={value} style={{left: value/duration*100+"%"}}/>)}
             <Progress percent={Math.floor(currentTime/duration*100)} progress color='blue' />
           </div>
           <div className="container-transcript">
@@ -262,7 +284,8 @@ class App extends Component {
 }
 
 const options = {
-  autoStart: false
+  autoStart: false // true?
+
 }
 
 export default SpeechRecognition(options)(App);
