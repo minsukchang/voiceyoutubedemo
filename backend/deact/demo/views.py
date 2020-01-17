@@ -26,6 +26,7 @@ class SessionViewSet(viewsets.ModelViewSet):
     """
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
+    # lookup_field = 'sessionID'#?
     # permission_classes = (AnonCreateAndUpdateOwnerOnly, ListAdminOnly,)
     # lookup_field = 'sessionID'
 
@@ -33,8 +34,7 @@ class SessionViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-
-        return Response(serializer.data)
+        return Response(serializer.data, status=HTTP_200_OK)
 
     def perform_create(self, serializer):
         serializer.save()
@@ -60,12 +60,27 @@ class SessionViewSet(viewsets.ModelViewSet):
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)      
 
-#is this needed
     @action(detail=True, methods=['post'], name='add pause')
     def add_pause(self, request, pk=None):
         session = self.get_object()
         print('the request time data is ', request.data['time'])
         session.pauses.append(request.data['time'])
-        # session.add_pause(request.data['time'])
         session.save()
         return Response({'status': 'pause added'})
+
+    @action(detail=True, methods=['post'], name='add bookmark')
+    def add_bookmark(self, request, pk=None):
+        session = self.get_object()
+        print('the request time data is ', request.data['time'])
+        session.bookmarks.append(request.data['time'])
+        session.save()
+        return Response({'status': 'bookmark added'})
+
+    @action(detail=True, methods=['post'], name='add transcript')
+    def add_transcript(self, request, pk=None):
+        session = self.get_object()
+        print('the request time data is ', request.data['time'])
+        session.transcripts.append(request.data['transcript'])
+        session.transcript_times.append(request.data['time'])
+        session.save()
+        return Response({'status': 'transcript added'})
