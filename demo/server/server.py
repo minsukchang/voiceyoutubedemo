@@ -16,7 +16,9 @@ def helloWorld():
 @cross_origin()
 def fetchSubtitle(video_id):
   # video_id="Ew-3-8itpjc"
+  video_id="6aVOjLuw-Qg"
   out_filename = video_id+".json"
+  print('here')
   if not os.path.isfile('./static/subtitle/'+out_filename):
     URL = "https://downsub.com/?url=https://www.youtube.com/watch?v="+video_id
     r = requests.get(URL)
@@ -26,5 +28,3 @@ def fetchSubtitle(video_id):
     subtitle = requests.get("https://downsub.com/"+href)
     subtitle = srttojson.parse_srt(subtitle.content.decode())
     open("./static/subtitle/"+out_filename, 'w').write(json.dumps(subtitle, indent=2, sort_keys=True))
-
-

@@ -3,7 +3,7 @@ import YouTube from 'react-youtube';
 import SpeechRecognition from 'react-speech-recognition';
 import { Header, Input, Form, Button, Progress, Dimmer, Loader } from 'semantic-ui-react';
 import './App.css';
-import subtitle from './subtitle.json';
+import subtitle from './6aVOjLuw-Qg.json';
 import axios from 'axios';
 
 
@@ -29,11 +29,12 @@ class App extends Component {
       url: '',
       duration: 0,
       currentTime: 0,
-      transcriptTime: 3,
+      transcriptTime: 2,
       previousTranscript: '',
       videoTarget: null,
       bookmarks: [5, 80, 250],
     }
+    this.downloadSubtitles = this.downloadSubtitles.bind(this);
     this._onPlay = this._onPlay.bind(this);
     this._onPause = this._onPause.bind(this);
     this._onStateChange = this._onStateChange.bind(this);
@@ -49,7 +50,24 @@ class App extends Component {
   componentDidMount() {
     const { recognition, stopListening } = this.props;
     recognition.lang = 'en-US';
-    console.log(subtitle)
+    const grammar = '#JSGF V1.0; grammar colors; public <action> = pause | play | jump | add;'
+    const SpeechGrammarList =
+        window.SpeechGrammarList ||
+        window.webkitSpeechGrammarList ||
+        window.mozSpeechGrammarList ||
+        window.msSpeechGrammarList ||
+        window.oSpeechGrammarList;
+    if (SpeechGrammarList) {
+      const speechRecognitionList = new SpeechGrammarList();
+      speechRecognitionList.addFromString(grammar, 1);
+      recognition.grammars = speechRecognitionList;
+      console.log(speechRecognitionList);
+      // Use speechRecognitionList
+    } else {
+      // SpeechGrammarList not supported by the user's browser; show this in the UI
+      console.log("cannot find the matching grammarList")
+    }
+
     if (sessionStorage.getItem('sessionCreated') === null) {
       axios.post('http://127.0.0.1:8000/sessions/', {
         pauses: [],
@@ -62,6 +80,14 @@ class App extends Component {
         console.log('new session created' + sessionStorage.getItem('sessionID'))
       });
     }
+    // this.downloadSubtitles();
+  }
+
+  async downloadSubtitles(){
+    axios.get('http://127.0.0.1:8000/download_subtitles/', {
+    }).then((response) => {
+      console.log(response)
+    });
   }
 
   getQueryVariable(url, variable) {
@@ -120,7 +146,7 @@ class App extends Component {
     if (listening) {
       console.log('stop listening')
       resetTranscript();
-      this.setState({previousTranscript: '', transcriptTime: 3});
+      this.setState({previousTranscript: '', transcriptTime: 2});
       clearInterval(this.state.transcriptInterval);
       stopListening();
     }
@@ -128,16 +154,14 @@ class App extends Component {
       console.log('start listening')
       startListening();
       const transcriptInterval = setInterval(() => {
-        const listening = this.props.listening
+        const { listening, transcript} = this.props;
+        this.onTranscriptHandler(transcript);
         if(listening && this.state.transcriptTime){
           this.setState({transcriptTime: this.state.transcriptTime - 1});
           console.log('waiting for transcription', this.state.transcriptTime);
         }
         else{
-          const transcript = this.props.transcript
-          this.onTranscriptHandler(transcript);
-          this.setState({transcriptTime: 3});
-          console.log('reset transcriptionTimer')
+          this.setState({transcriptTime: 2});
         }     
       }, 1000);
       this.setState({transcriptInterval: transcriptInterval});
@@ -150,15 +174,17 @@ class App extends Component {
     //update previousTranscript and wait for more
     if(transcript !== this.state.previousTranscript){
       this.setState({previousTranscript: transcript});
+      this.setState({transcriptTime: 2});
     }
     //reset previousTranscript and Transcript and process
-    else if(transcript !== ''){
+    else if(transcript !== '' && !this.state.transcriptTime){
       axios.post('http://127.0.0.1:8000/sessions/'+sessionStorage.getItem('sessionID')+'/add_transcript/', {
         time: formatTime(this.state.currentTime),
         transcript: transcript
       });
       console.log('save transcript', transcript)
       const arr = transcript.split(" ");
+      // bookmark
       if (['add', 'bookmark'].every(val => arr.includes(val))) {
         const { currentTime, bookmarks } = this.state;
         bookmarks.push(currentTime);
@@ -186,7 +212,15 @@ class App extends Component {
         }
       }
       else if (arr.includes('find')) {
-        this.findWord(arr[1]);
+        this.findWord(arr.slice(1));
+      }
+      else if (arr.includes('pause') || arr.includes('stop')) {
+        const { videoTarget, bookmarks, currentTime } = this.state;
+        videoTarget.pauseVideo();
+      }
+      else if (arr.includes('play') || arr.includes('resume')) {
+        const { videoTarget, bookmarks, currentTime } = this.state;
+        videoTarget.playVideo();
       }
       resetTranscript();
       this.setState({previousTranscript: ''})
@@ -208,17 +242,27 @@ class App extends Component {
   }
 
   findWord(word) {
-    const { currentTime } = this.state;
+    const { currentTime, videoTarget } = this.state;
     let previousTimeArray = []; // array to store timestamps in which word appeared before the current time
     let futureTimeArray = []; // array to store timestamps in which word appears ahead of the current time
     for (let i = 0; i<subtitle.length; i++) {
       let endTime = subtitle[i].end;
       let content = subtitle[i].content;
       if (content.includes(word)) {
-        currentTime < endTime ? previousTimeArray.push(subtitle[i]) : futureTimeArray.push(subtitle[i]);
+        currentTime >= endTime ? previousTimeArray.push(subtitle[i]) : futureTimeArray.push(subtitle[i]);
       }
     }
-    console.log(previousTimeArray, futureTimeArray);
+    console.log('prev array: ', previousTimeArray);
+    console.log('future array: ', futureTimeArray);
+    if(previousTimeArray.length){
+      videoTarget.seekTo(previousTimeArray[previousTimeArray.length-1].start);
+    }
+    else if (futureTimeArray.length){
+      videoTarget.seekTo(futureTimeArray[futureTimeArray.length-1-1].start);
+    }
+    else{
+      console.log('cannot find the keyword');
+    }
   }
 
   render() {
