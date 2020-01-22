@@ -25,5 +25,6 @@ router.register('sessions', views.SessionViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('session/', views.session, name="session"),
+    path('download_subtitles/', views.download_subtitles, name="download subtitles"),
+    path('find_sentence/', views.find_sentence)
 ]
