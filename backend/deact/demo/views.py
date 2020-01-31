@@ -40,6 +40,7 @@ def download_subtitles(request):
 @csrf_exempt
 @api_view(["POST"])
 def find_sentence(request):
+    found = False
     transcript = ' '.join(request.data['transcript'])
     print('given transcript is ', transcript)
     video_id="6aVOjLuw-Qg"
@@ -53,16 +54,16 @@ def find_sentence(request):
             # print(line)
             corpus.append(line['content'])
             corpus_time.append(line['start'])
-    print(corpus)
     vect = TfidfVectorizer(min_df=1, stop_words="english")  
     tfidf = vect.fit_transform(corpus)   
     pairwise_similarity = tfidf * tfidf.T
     arr = pairwise_similarity.toarray()   
     np.fill_diagonal(arr, np.nan)     
     result_idx = np.nanargmax(arr[0])    
-    print('most similar sentence is ', corpus[result_idx])
-
-    return Response({'time': corpus_time[result_idx-1]})
+    print('most similar sentence is ', corpus[result_idx], arr)
+    if result_idx != 1:
+        found = True
+    return Response({'time': corpus_time[result_idx-1], 'found': found})
     print('here')
 
 class SessionViewSet(viewsets.ModelViewSet):
@@ -130,5 +131,13 @@ class SessionViewSet(viewsets.ModelViewSet):
         session.transcript_times.append(request.data['time'])
         session.save()
         return Response({'status': 'transcript added'})
+
+    @action(detail=True, methods=['post'], name='add returnpoint')
+    def add_returnpoint(self, request, pk=None):
+        session = self.get_object()
+        print('the request time data is ', request.data['time'])
+        session.returnpoints.append(request.data['time'])
+        session.save()
+        return Response({'status': 'returnpoint added'})
 
     

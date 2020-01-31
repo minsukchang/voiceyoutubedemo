@@ -26,4 +26,9 @@ class Session(models.Model):
         null=True,
         blank=True
     )
+    returnpoints = ArrayField(
+        models.TimeField(blank=True),
+        null=True,
+        blank=True
+    )
     

@@ -6,7 +6,6 @@ import './App.css';
 import subtitle from './6aVOjLuw-Qg.json';
 import axios from 'axios';
 
-
 // Helper Functions
 
 function formatTime(time) {
@@ -241,28 +240,41 @@ class App extends Component {
     this.setState({videoId: videoId, url: '' })
   }
 
-  findWord(word) {
+  findWord(words) {
     const { currentTime, videoTarget } = this.state;
-    let previousTimeArray = []; // array to store timestamps in which word appeared before the current time
-    let futureTimeArray = []; // array to store timestamps in which word appears ahead of the current time
-    for (let i = 0; i<subtitle.length; i++) {
-      let endTime = subtitle[i].end;
-      let content = subtitle[i].content;
-      if (content.includes(word)) {
-        currentTime >= endTime ? previousTimeArray.push(subtitle[i]) : futureTimeArray.push(subtitle[i]);
+    //keyword matching
+    if(words.length === 1){
+      let keyword = words[0]
+      let previousTimeArray = []; // array to store timestamps in which word appeared before the current time
+      let futureTimeArray = []; // array to store timestamps in which word appears ahead of the current time
+      for (let i = 0; i<subtitle.length; i++) {
+        let endTime = subtitle[i].end;
+        let content = subtitle[i].content;
+        if (content.includes(keyword)) {
+          currentTime >= endTime ? previousTimeArray.push(subtitle[i]) : futureTimeArray.push(subtitle[i]);
+        }
+      }
+      console.log('prev array: ', previousTimeArray);
+      console.log('future array: ', futureTimeArray);
+      if(previousTimeArray.length){
+        videoTarget.seekTo(previousTimeArray[previousTimeArray.length-1].start);
+      }
+      else if (futureTimeArray.length){
+        videoTarget.seekTo(futureTimeArray[futureTimeArray.length-1-1].start);
+      }
+      else{
+        console.log('cannot find the keyword');
       }
     }
-    console.log('prev array: ', previousTimeArray);
-    console.log('future array: ', futureTimeArray);
-    if(previousTimeArray.length){
-      videoTarget.seekTo(previousTimeArray[previousTimeArray.length-1].start);
-    }
-    else if (futureTimeArray.length){
-      videoTarget.seekTo(futureTimeArray[futureTimeArray.length-1-1].start);
-    }
+    //sentence similarity
     else{
-      console.log('cannot find the keyword');
+      axios.post('http://127.0.0.1:8000/find_sentence/', {
+        transcript: words
+      }).then((response) => {
+        videoTarget.seekTo(response.data.time)
+      });
     }
+    
   }
 
   render() {
