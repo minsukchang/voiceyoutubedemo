@@ -16,6 +16,7 @@ from demo.serializers import SessionSerializer
 from selenium import webdriver
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np    
+import spacy
 
 
 
@@ -54,6 +55,13 @@ def find_sentence(request):
             # print(line)
             corpus.append(line['content'])
             corpus_time.append(line['start'])
+    print(corpus)
+    #lemmatization using spacy
+    nlp = spacy.load('en', disable=['parser', 'ner'])
+    for i,sentence in enumerate(corpus):
+        doc = nlp(sentence)
+        corpus[i] = " ".join(token.lemma_ for token in doc)
+    print(corpus)
     vect = TfidfVectorizer(min_df=1, stop_words="english")  
     tfidf = vect.fit_transform(corpus)   
     pairwise_similarity = tfidf * tfidf.T
@@ -64,7 +72,6 @@ def find_sentence(request):
     if result_idx != 1:
         found = True
     return Response({'time': corpus_time[result_idx-1], 'found': found})
-    print('here')
 
 class SessionViewSet(viewsets.ModelViewSet):
     """
