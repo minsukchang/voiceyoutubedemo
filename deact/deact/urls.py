@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from api.views import SessionViewSet, download_subtitles, find_sentence
-from core.views import index
+from core.views import index, instructions
 from rest_framework.routers import DefaultRouter
 
 # Create a router and register our viewsets with it.
@@ -24,6 +24,7 @@ router = DefaultRouter()
 router.register('sessions', SessionViewSet)
 
 urlpatterns = [
+    path('instructions', instructions, name="instructions"),
     path('demo', index, name="index"),
     path('', include(router.urls)),
     path('admin/', admin.site.urls),

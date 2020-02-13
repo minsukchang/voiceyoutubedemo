@@ -5,3 +5,5 @@ from django.shortcuts import render
 def index(request):
     return render(request, "build/index.html")
 
+def instructions(request):
+    return render(request, "build/instructions.html")
