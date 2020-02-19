@@ -5,6 +5,7 @@ import { Header, Input, Form, Button, Progress, Dimmer, Loader } from 'semantic-
 import './App.css';
 import subtitle from './6aVOjLuw-Qg.json';
 import axios from 'axios';
+import {Link}  from 'react-router-dom';
 
 // Helper Functions
 
@@ -19,6 +20,161 @@ function formatTime(time) {
   return minutes + ":" + seconds;
 }
 
+function extract_description(transcript) {
+  const arr = transcript.split(" ");
+  const extra_words = ['I', 'want', 'to', 'umm','hmm', 'how', 'let', 'me', 'like', 'well', 'let\'s', 'from', 'for', 'can', 'may', 'when', 'where', 'she', 'he', 'the', 'an', 'a']
+  return arr.filter(function(item) { 
+    return extra_words.indexOf(item) < 0; // Returns true for items not found in extra_words.
+ });
+}
+
+function common_elem(transcript, variants) {
+  var common = transcript.filter(value => variants.includes(value));
+
+  console.log('tr is ', transcript, 'vars is ', variants);
+  if (common.length){
+    console.log('common is ', common);
+    return common;
+  }
+  else{
+    return false;
+  }
+}
+
+//can be given alone; 
+var play_variants = ['play', 'go', 'show', 'resume', 'begin', 'watch', 'start'];
+//can be given alone; if followed by time, pause for that duration. Otherrwise, pause infinitely.
+var pause_variants = ['pause', 'stop', 'hold', 'wait' ];
+
+//if followed by bookmark or descriptive words, go to that part. 
+var jump_variants = ['jump', 'find', 'see', 'search', 'look'].concat(play_variants);
+
+//if followed by time, go that much. Otherwise, default is 30 secs.
+var future_variants = ['future', 'skip', 'forward', 'next', 'later'];
+var past_varaints = ['past', 'before', 'ago', 'previous', 'back', 'backward', 'rewind'];
+
+//if followed by a word from bookmark_variants, add bookmark
+var add_variants = ['add', 'create', 'new', 'mark', 'save', 'remember'];
+var bookmark_variants = ['bookmark', 'now', 'this', 'that', 'here', 'current'];
+
+//if there was recent navigate action, repeat that. else, go back 30 sec.
+var again_variants = ['again', 'replay', 'repeat'];
+
+var this_variants = ['this', 'that', 'here', 'it'];
+
+
+//chars to numbers
+var Small = {
+  'zero': 0,
+  'one': 1,
+  'two': 2,
+  'three': 3,
+  'four': 4,
+  'five': 5,
+  'six': 6,
+  'seven': 7,
+  'eight': 8,
+  'nine': 9,
+  'ten': 10,
+  'eleven': 11,
+  'twelve': 12,
+  'thirteen': 13,
+  'fourteen': 14,
+  'fifteen': 15,
+  'sixteen': 16,
+  'seventeen': 17,
+  'eighteen': 18,
+  'nineteen': 19,
+  'twenty': 20,
+  'thirty': 30,
+  'forty': 40,
+  'fifty': 50,
+  'sixty': 60,
+  'seventy': 70,
+  'eighty': 80,
+  'ninety': 90
+};
+
+var Magnitude = {
+  'thousand': 1000,
+  'million': 1000000,
+  'billion': 1000000000,
+  'trillion': 1000000000000,
+  'quadrillion': 1000000000000000,
+  'quintillion': 1000000000000000000,
+  'sextillion': 1000000000000000000000,
+  'septillion': 1000000000000000000000000,
+  'octillion': 1000000000000000000000000000,
+  'nonillion': 1000000000000000000000000000000,
+  'decillion': 1000000000000000000000000000000000,
+};
+
+var a, n, g;
+
+function text2num(s) {
+  a = s.toString().split(/[\s-]+/);
+  n = 0;
+  g = 0;
+  a.forEach(feach);
+  return n + g;
+}
+
+function feach(w) {
+  var x = Small[w];
+  if (x != null) {
+    g = g + x;
+  }
+  else if (w === "hundred") {
+    g = g * 100;
+  }
+  else {
+    x = Magnitude[w];
+    if (x != null) {
+      n = n + g * x
+      g = 0;
+    }
+  }
+}
+
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function extract_time(transcript) {
+  var idx, nnumber;
+  var flag = 0;
+  if (transcript.indexOf("minutes") !== -1) {
+    flag = 1;
+    idx = transcript.indexOf("minutes") - 1;
+  } 
+  else if (transcript.indexOf("minute")!== -1) {
+    flag = 1;
+    idx = transcript.indexOf("minute") - 1;
+  } 
+  else if (transcript.indexOf("seconds")!== -1) {
+    idx = transcript.indexOf("seconds") - 1;
+  } 
+  else if (transcript.indexOf("second")!== -1) {
+    idx = transcript.indexOf("second") - 1;
+  } 
+  else {
+    return false;
+  }
+  
+  if (isNumeric(transcript[idx]) === false){
+    nnumber = text2num(transcript[idx]);    
+  } 
+  else{
+    nnumber = parseInt(transcript[idx]);
+  }
+
+  if (flag === 1){
+    nnumber *= 60;
+  }
+  console.log("number of seconds: " + nnumber);
+  return nnumber;
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +187,9 @@ class App extends Component {
       transcriptTime: 2,
       previousTranscript: '',
       videoTarget: null,
-      bookmarks: [5, 80, 250],
+      bookmarks: [],
+      returnpoints: [],
+      showInstruction: false,
     }
     this.downloadSubtitles = this.downloadSubtitles.bind(this);
     this._onPlay = this._onPlay.bind(this);
@@ -42,6 +200,7 @@ class App extends Component {
     this.onClickHandler = this.onClickHandler.bind(this);
     this._onReady = this._onReady.bind(this);
     this.onListenHandler = this.onListenHandler.bind(this);
+    this.handleShow = this.handleShow.bind(this)
 
   }
 
@@ -68,11 +227,12 @@ class App extends Component {
     }
 
     if (sessionStorage.getItem('sessionCreated') === null) {
-      axios.post('http://127.0.0.1:8000/sessions/', {
+      axios.post('http://15.164.225.210/backend/sessions/', {
         pauses: [],
         bookmarks: [],
         transcripts: [],
-        transcript_times: []
+        transcript_times: [],
+        returnpoints: []
       }).then((response) => {
         sessionStorage.setItem('sessionID', response.data.id)
         sessionStorage.setItem('sessionCreated', true)
@@ -83,7 +243,7 @@ class App extends Component {
   }
 
   async downloadSubtitles(){
-    axios.get('http://127.0.0.1:8000/download_subtitles/', {
+    axios.get('http://15.164.225.210/backend/download_subtitles/', {
     }).then((response) => {
       console.log(response)
     });
@@ -99,8 +259,13 @@ class App extends Component {
         }
     }
     console.log('Query variable %s not found', variable);
-}
+  }
 
+  handleShow() {
+    this.setState({
+      showInstruction: true
+    })
+  }
   _onReady(event) {
     this.setState({
       duration: event.target.getDuration(), 
@@ -114,12 +279,13 @@ class App extends Component {
     this.setState({
       updateInterval: updateInterval
     })
+    console.log('play the video')
   }
 
   _onPause(event) {
     const { updateInterval } = this.state;
     clearInterval(updateInterval);
-    axios.post('http://127.0.0.1:8000/sessions/'+sessionStorage.getItem('sessionID')+'/add_pause/', {
+    axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_pause/', {
       time: formatTime(event.target.getCurrentTime())
     });
     console.log('pause time is ', formatTime(event.target.getCurrentTime()))
@@ -168,35 +334,43 @@ class App extends Component {
   }
 
   onTranscriptHandler(transcript) {
+    var time, common;
     const { resetTranscript } = this.props;
+    const {previousTranscript, transcriptTime, videoTarget, currentTime} = this.state;
     console.log('transcript is: ', transcript, this.state.previousTranscript)
     //update previousTranscript and wait for more
-    if(transcript !== this.state.previousTranscript){
+    if(transcript !== previousTranscript){
       this.setState({previousTranscript: transcript});
       this.setState({transcriptTime: 2});
     }
     //reset previousTranscript and Transcript and process
-    else if(transcript !== '' && !this.state.transcriptTime){
-      axios.post('http://127.0.0.1:8000/sessions/'+sessionStorage.getItem('sessionID')+'/add_transcript/', {
-        time: formatTime(this.state.currentTime),
+    else if(transcript !== '' && !transcriptTime){
+      axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_transcript/', {
+        time: formatTime(currentTime),
         transcript: transcript
       });
       console.log('save transcript', transcript)
-      const arr = transcript.split(" ");
-      // bookmark
-      if (['add', 'bookmark'].every(val => arr.includes(val))) {
-        const { currentTime, bookmarks } = this.state;
-        bookmarks.push(currentTime);
-        bookmarks.sort();
-        this.setState({bookmarks: bookmarks});
-        axios.post('http://127.0.0.1:8000/sessions/'+sessionStorage.getItem('sessionID')+'/add_bookmark/', {
-          time: formatTime(currentTime)
-        });
-        console.log('bookmark time is ', formatTime(currentTime))
+
+      transcript = transcript.toLowerCase()
+      const arr = extract_description(transcript);
+      console.log('arr is ', arr);
+      if(!arr.length){ 
+        // TODO: show alert
+        console.log('Please be more descriptive1');
       }
-      else if (['go', 'bookmark'].every(val => arr.includes(val))) {
-        console.log('go bookmark', arr)
-        const { videoTarget, bookmarks, currentTime } = this.state;
+
+      else if (common_elem(arr, bookmark_variants)) {
+        const { bookmarks, currentTime, returnpoints } = this.state;
+        if (common_elem(arr, add_variants)) {
+          const { currentTime, bookmarks } = this.state;
+          bookmarks.push(currentTime);
+          bookmarks.sort();
+          this.setState({bookmarks: bookmarks});
+          axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_bookmark/', {
+            time: formatTime(currentTime)
+          });
+          console.log('bookmark time is ', formatTime(currentTime))
+        }
         let idx = 0;
         while(bookmarks[++idx] < currentTime);
         idx--;
@@ -204,23 +378,81 @@ class App extends Component {
         console.log('next bookmark', idx, bookmarks, bookmarks[idx])
         if (arr.includes('next') && bookmarks.length>idx) {
           console.log('next bookmark', idx, bookmarks, bookmarks[idx])
-          videoTarget.seekTo(bookmarks[idx+1]);
+          axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_returnpoint/', {
+            time: formatTime(currentTime)
+          });
+          returnpoints.push(currentTime);
+          this.state.videoTarget.seekTo(bookmarks[idx+1]);
         }
         else if (arr.includes('previous') && bookmarks.length>0 && bookmarks[idx]<currentTime) {
-          videoTarget.seekTo(bookmarks[idx]);
+          axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_returnpoint/', {
+            time: formatTime(currentTime)
+          });
+          returnpoints.push(currentTime);
+          this.state.videoTarget.seekTo(bookmarks[idx]);
         }
       }
-      else if (arr.includes('find')) {
-        this.findWord(arr.slice(1));
+      else if(common_elem(arr, future_variants)) {
+        if (arr.length === 1){
+          videoTarget.seekTo(currentTime + 30);
+        }
+        else if (time = extract_time(arr)){
+          videoTarget.seekTo(currentTime + time);
+        }
+        else{
+          console.log('Please provide time');
+        }
       }
-      else if (arr.includes('pause') || arr.includes('stop')) {
-        const { videoTarget, bookmarks, currentTime } = this.state;
-        videoTarget.pauseVideo();
+      else if(common_elem(arr, past_varaints)) {
+        if (arr.length === 1){
+          videoTarget.seekTo(currentTime - 30);
+        }
+        else if (time = extract_time(arr)){
+          videoTarget.seekTo(currentTime - time);
+        }
+        else{
+          console.log('Please provide time');
+        }
       }
-      else if (arr.includes('play') || arr.includes('resume')) {
-        const { videoTarget, bookmarks, currentTime } = this.state;
-        videoTarget.playVideo();
+      else if (common_elem(arr, pause_variants)){
+        if (arr.length === 1){
+          videoTarget.pauseVideo();
+        }
+        else if (time = extract_time(arr)){
+          //TODO: pause for that long and play again
+        }
       }
+      else if (common = common_elem(arr, jump_variants)){
+        if (arr.length === 1){
+          if(common_elem(arr, play_variants)) {
+            console.log('here play is called');
+            videoTarget.playVideo();
+          }
+          else{
+            console.log('Please be more descriptive2')
+          }
+        }
+        else{
+          this.findWord(arr.filter(value => !common.includes(value)));
+        }
+      }
+      else if (common_elem(arr, again_variants)) {
+        // TODO: if there was recent navigate action, repeat that. else, go back 30 sec.
+        videoTarget.seekTo(currentTime - 30);
+      }
+      else if (arr.includes('return')){
+        const {returnpoints, currentTime } = this.state;
+        console.log('here return is called', returnpoints);
+        axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_returnpoint/', {
+          time: formatTime(currentTime)
+        });
+        this.state.videoTarget.seekTo(returnpoints[returnpoints.length-1]);
+        returnpoints.push(currentTime);
+      }
+      else{
+        console.log('Please be more descriptive4');
+      }
+      
       resetTranscript();
       this.setState({previousTranscript: ''})
     }
@@ -228,9 +460,8 @@ class App extends Component {
   }
 
   onClickHandler() {
-    const { videoTarget } = this.state;
-    if ( videoTarget.getPlayerState() === 1 ) videoTarget.pauseVideo();
-    else videoTarget.playVideo();
+    if ( this.state.videoTarget.getPlayerState() === 1 ) this.state.videoTarget.pauseVideo();
+    else this.state.videoTarget.playVideo();
   }
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value })
@@ -241,7 +472,8 @@ class App extends Component {
   }
 
   findWord(words) {
-    const { currentTime, videoTarget } = this.state;
+    console.log(words);
+    const { currentTime,returnpoints } = this.state;
     //keyword matching
     if(words.length === 1){
       let keyword = words[0]
@@ -257,10 +489,20 @@ class App extends Component {
       console.log('prev array: ', previousTimeArray);
       console.log('future array: ', futureTimeArray);
       if(previousTimeArray.length){
-        videoTarget.seekTo(previousTimeArray[previousTimeArray.length-1].start);
+        axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_returnpoint/', {
+          time: formatTime(currentTime)
+        });
+        returnpoints.push(currentTime);
+        this.state.videoTarget.seekTo(previousTimeArray[previousTimeArray.length-1].start);
+        this.state.videoTarget.playVideo();
       }
       else if (futureTimeArray.length){
-        videoTarget.seekTo(futureTimeArray[futureTimeArray.length-1-1].start);
+        axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_returnpoint/', {
+          time: formatTime(currentTime)
+        });
+        returnpoints.push(currentTime);
+        this.state.videoTarget.seekTo(futureTimeArray[futureTimeArray.length-1].start);
+        this.state.videoTarget.playVideo();
       }
       else{
         console.log('cannot find the keyword');
@@ -268,10 +510,20 @@ class App extends Component {
     }
     //sentence similarity
     else{
-      axios.post('http://127.0.0.1:8000/find_sentence/', {
+      axios.post('http://15.164.225.210/backend/find_sentence/', {
         transcript: words
       }).then((response) => {
-        videoTarget.seekTo(response.data.time)
+        axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_returnpoint/', {
+          time: formatTime(currentTime)
+        });
+        if(response.data.found){
+          returnpoints.push(currentTime);
+          this.state.videoTarget.seekTo(response.data.time)
+          this.state.videoTarget.playVideo();
+        }
+        else{
+          console.log("no similar conent");
+        }
       });
     }
     
@@ -280,8 +532,8 @@ class App extends Component {
   render() {
     const { transcript, listening } = this.props;
     const { videoId, url, duration, currentTime, videoTarget, bookmarks, videoState } = this.state;
-    // if (videoState && videoState === 5 && videoTarget.getDuration() != duration) {
-    //   this.setState({duration: videoTarget.getDuration()})
+    // if (videoState && videoState === 5 && this.state.videoTarget.getDuration() != duration) {
+    //   this.setState({duration: this.state.videoTarget.getDuration()})
     // }
     return (
       <div className="App">
@@ -294,6 +546,7 @@ class App extends Component {
           <Form onSubmit={this.handleSubmit}>
             <Input id="url" name="url" onChange={this.handleChange} action={{ icon: 'search' }} value={url} placeholder='Submit youtube URL' />
           </Form>
+          <a href='http://15.164.225.210/instructions' target="_blank" id="instruction" className="readme">README</a>
         </div>
         <div className="container-wrapper">
           <div className="container-video">
@@ -307,9 +560,6 @@ class App extends Component {
               opts={{playerVars: {autoplay: 1, start:0}}}
             />
             <div className="overflow" style={{zIndex: videoState === 1 || videoState === '-1' || !videoState ? '-1' : '100'}}>
-              <div className="side1">
-                Hi
-              </div>
             </div>
           </div>
         </div>
@@ -325,7 +575,7 @@ class App extends Component {
           </div>
           <div className="container-transcript">
             <Header as="h4">Transcript</Header>
-            <p>{listening ? "The app is listening" : "Please pause the video to speak"}</p> 
+            <p>{listening ? "The app is listening" : "Please click Start Listening"}</p> 
             {transcript}
           </div>
         </div>

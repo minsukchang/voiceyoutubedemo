@@ -38,6 +38,9 @@
 
 .input-url {
   padding: 5px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #url {
@@ -92,4 +95,39 @@
   height: 1.75em;
   background: red;
   z-index: 1000;
+}
+
+/* Important part */
+.modal-dialog {
+  overflow-y: initial !important
+}
+
+.modal-body {
+  height: 400px;
+  overflow-y: auto;
+}
+
+.center-me {
+  margin: 0 auto;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: center;
+}
+
+.link {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.mytext {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+.readme {
+  margin-left: 10px;
+  font-size: calc(10px + 1vmin);
 }

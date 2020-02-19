@@ -25,8 +25,8 @@ router.register('sessions', SessionViewSet)
 
 urlpatterns = [
     path('instructions', instructions, name="instructions"),
-    path('demo', index, name="index"),
-    path('', include(router.urls)),
+    path('', index, name="index"),
+    path('backend/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('download_subtitles/', download_subtitles, name="download subtitles"),
     path('find_sentence/', find_sentence)

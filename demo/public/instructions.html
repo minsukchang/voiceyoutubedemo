@@ -7,7 +7,7 @@
     <title> Instructions</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
-    <link rel="stylesheet" href="jquery-ui.css" />
+    <link rel="stylesheet" href="/static/jquery-ui.css" />
     <style>
         /* Important part */
         .modal-dialog {
@@ -55,9 +55,9 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="container link">
-                <!-- Modal -->
-                <button type="button" class="btn btn-secondary align-middle" data-toggle="modal" data-target="#myModal1"> View
-                    Instructions Again
+                <!-- Button Trigger Modal -->
+                <button type="button" class="btn btn-secondary align-middle" data-toggle="modal" data-target="#myModal1"> 
+                    View Instructions Again
                 </button>
 
                 <!-- Modal -->
@@ -65,21 +65,30 @@
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Instruction 1/9 - Reading all the Instructions</h4>
+                                <h4 class="modal-title" id="myModalLabel">Introduction</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
 
-                                <p> In this experiment, we want to see how using voice to navigate <b>HOW-TO VIDEOS</b> can
-                                    help people learn to do makeups.</p>
-                                <p> Some of them are long, but it's <b>very important that you read them carefully to understand exactly what we want you to do.</b> </p>
-                                <p style="color:red"> So please read all of them very carefully. </p>
-                                <p>There are total <b>NINE instructions</b>, please read them all before diving into the tasks
+                                <p> In this demo, we want to see how people use voice to navigate <b>HOW-TO VIDEOS</b>.</p>
+                                <p> On the interface, you can control the video using voice. We are deliberately not telling you the exact commands, because we want to see how YOU navigate the video and how YOU say them</p>
+
+                                <p> Click on the “start listening” button and you will see the transcript of what you say.</p>
+                                <p>
+                                    <b>THIS IS HYPOTHETICAL, SO DON'T WORRY ABOUT SAYING IT IN A
+                                    WAY A SYSTEM WOULD UNDERSTAND.</b> Just say <b>HOW YOU </b> want to say it.
+                                </p>
+                                <p style="color:red">
+                                    Example
+                                    <ul>
+                                        <li>my need: "I want to see the beginning of the step, because I want to check if
+                                            I have it right"</li>
+                                        <li>I want to be able to say: "let me see that again"</li>
+                                    </ul>
                                 </p>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" id="proceed-btn" class="btn btn-outline-success btn-next">I will read
-                                    all nine instructions <br/>before beginning the task</button>
+                                <button type="button" id="proceed-btn" class="btn btn-outline-success btn-next">I understand</button>
                                 <!--<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button> -->
                             </div>
                         </div>
@@ -93,54 +102,25 @@
                     <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Instruction 2/9 - Your Makeup kit!</h4>
+                                <h4 class="modal-title" id="myModalLabel">Instruction 1/4 - Use Chrome Browser</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
                                 <p>
-                                    <b>YOU HAVE TO WATCH, DO AND LEARN SIMULTANEOUSLY.</b></p>
-                                <p>So please have your makeup products and tools ready at your hands, so you can follow the video while
-                                    doing the tasks.</p>
+                                    <b>YOU HAVE TO USE CHROME TO TEST THE INTERFACE.</b></p>
+                                <p>Our system uses "react-speech-recognition", a React component that converts speech from the microphone to text.</p>
                                 <p>
-                                    Do you have your makeup kit with you now? Tell us what you have in front of you verbally. :)
+                                    Under the hood, it uses Web Speech API. Currently, this component will only work in Chrome. It fails gracefully on other browsers.
                                 </p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back<br/></button>
-                                <button type="button" id="proceed-btn2" class="btn btn-outline-success btn-next">I have it with me</button>
+                                <button type="button" id="proceed-btn2" class="btn btn-outline-success btn-next">I will use Chrome</button>
 
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Modal -->
-                <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" style="width:100%;">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Instruction 3/9 - Certificate Error</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>When you visit our interface (Don't do it now) for the first time, it might give you a
-                                    warning about certificate (privacy) error.
-                                </p>
-                                <p>It's an issue on our end, and we promise it's safe. </p>
-                                <p>Please click “Advanced”, and click "Proceed to minsukchang.com (unsafe)".
-                                    <p>Scroll Down for Demonstration<br/>
-                                        <img src="cert_error.gif" width="700" alt="certifcate error" class="border">                                        </p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
-                                <button type="button" id="proceed-btn3" class="btn btn-outline-success btn-next">I understand
-                                    that I have to <br/>grant microphone access when prompted</button>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
 
 
                 <!-- Modal -->
@@ -148,7 +128,7 @@
                     <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Instruction 4/9 - Allowing Microphone Access</h4>
+                                <h4 class="modal-title" id="myModalLabel">Instruction 2/4 - Allowing Microphone Access</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
@@ -157,7 +137,7 @@
                                 </p>
                                 <p>Please click “ALLOW”. You will need this in order for the interface to listen to you.</p>
                                 <p>Scroll Down for Demonstration<br/>
-                                    <img src="mic-allow.gif" alt="allow microphone acess" class="border"> </p>
+                                    <img src="/static/mic-allow.gif" alt="allow microphone acess" class="border"> </p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
@@ -186,7 +166,7 @@
                                 <p>If the video changes and starts playing, say “stop”</p>
                                 <p>If these steps worked, your microphone is working with the interface. If it does not work,
                                     please refresh the page, and follow the steps 3 and 4 again.</p>
-                                <p> Scroll Down for Demonstration<br/> <img src="url-cap.gif" alt="allow microphone acess"
+                                <p> Scroll Down for Demonstration<br/> <img src="/static/url-cap.gif" alt="allow microphone acess"
                                         class="border"> </p>
                             </div>
                             <div class="modal-footer">
@@ -299,11 +279,12 @@
                             </div>
                             <div class="modal-body">
                                 <p> <b>PLEASE THINK ALOUD THROUGHOUT.</b></p>
-                                <p> <b>Describe what you’re trying to do and why</b></p>
+                                <p> <b>Everytime you perform an action, describe what you’re trying to do and why</b></p>
+                                <p> <b>Remember, if the system doesn't support what you want, say it regardless.</b></p>
                                 <p>You may pause, go back, skip, watch again, take as much time as you want to finish. </p>
 
                                 <p>Remember you have to watch, learn, do with a <b>HOW-TO VIDEO</b>, and make sure you have
-                                    <b> your make up tools ready with you!</b></p>
+                                    <b> your knitting kit ready with you!</b></p>
 
 
                                 <!--
@@ -328,15 +309,14 @@
     <div class="text-center mytext">
         <h3>You may close this tab/window. </h3>
         <h3>Instructions are also available on the interface.</h3>
-        <h3>If you are ready to move on, click <b>"NEXT"</b> on usertesting.com.</h3>
     </div>
 
 
 </body>
 
-<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="jquery-ui.js"></script>
-<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="/static/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/static/jquery-ui.js"></script>
+<script type="text/javascript" src="/static/script.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"

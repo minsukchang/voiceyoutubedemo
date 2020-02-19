@@ -71,6 +71,7 @@ def find_sentence(request):
         found = True
     return Response({'time': corpus_time[result_idx-1], 'found': found})
 
+
 class SessionViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides `list`, `create`, `retrieve`,
@@ -78,9 +79,6 @@ class SessionViewSet(viewsets.ModelViewSet):
     """
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
-    # lookup_field = 'sessionID'#?
-    # permission_classes = (AnonCreateAndUpdateOwnerOnly, ListAdminOnly,)
-    # lookup_field = 'sessionID'
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
