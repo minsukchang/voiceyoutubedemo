@@ -25,7 +25,7 @@ SECRET_KEY = '!rsi+n9s#s7hj)z=21xs+72_bb9$_sgq9@rqi4o-w+nia@_g)g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['15.164.225.210']
 
 
 # Application definition
@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_createsuperuser',
+    'clear_cache',
+    'distutilazy',
     'rest_framework',
     'corsheaders',
     'api',
@@ -130,7 +132,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, '../demo', "build", "static"),  # update the STATICFILES_DIRS,
+    os.path.join(BASE_DIR, '../demo', "build", "static"),  # update the STATICFILES_DIRS
 )
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
