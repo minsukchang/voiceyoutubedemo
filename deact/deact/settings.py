@@ -25,7 +25,7 @@ SECRET_KEY = '!rsi+n9s#s7hj)z=21xs+72_bb9$_sgq9@rqi4o-w+nia@_g)g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['15.164.225.210']
+ALLOWED_HOSTS = ['15.164.225.210','rubyslippers.kixlab.org', 'ec2-15-164-225-210.ap-northeast-2.compute.amazonaws.com']
 
 
 # Application definition
@@ -134,5 +134,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, '../demo', "build", "static"),  # update the STATICFILES_DIRS
+    os.path.join(BASE_DIR, '../demo', "build"),
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

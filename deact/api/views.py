@@ -14,26 +14,31 @@ import requests, json, os
 from api.models import Session 
 from api.serializers import SessionSerializer
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np    
 import spacy
 
-@api_view(["GET"])
-@action(detail=True, methods=['get'], name='download subtitles')
+@api_view(["POST"])
+@action(detail=True, methods=['post'], name='download subtitles')
 def download_subtitles(request):
-    video_id="6aVOjLuw-Qg"
+    video_id=request.data['video_id']
     out_filename = video_id+".json"
-    if not os.path.isfile('./static/subtitle/'+out_filename):
-        URL = "https://downsub.com/?url=https://www.youtube.com/watch?v="+video_id
-        browser = webdriver.Chrome('/usr/local/bin/chromedriver')
-        browser.get(URL)
-        soup = BeautifulSoup(html, 'html.parser')
-        soup.select('div#show a')[0].get('href')
-        # href = soup.select('div#show a')[0].get('href')
-        # subtitle = requests.get("https://downsub.com/"+href)
-        # subtitle = parse_srt(subtitle.content.decode())
-        subtitle = soup
-        # open("../../demo/server/static/subtitle/"+out_filename, 'w').write(json.dumps(subtitle, indent=2, sort_keys=True))
+    URL = "https://downsub.com/?url=https://www.youtube.com/watch?v="+video_id
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    browser = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
+    browser.get(URL)
+    soup = BeautifulSoup(html, 'html.parser')
+    soup.select('div#show a')[0].get('href')
+    href = soup.select('div#show a')[0].get('href')
+    subtitle = requests.get("https://downsub.com/"+href)
+    subtitle = parse_srt(subtitle.content.decode())
+    subtitle = soup
+    open("../static/"+out_filename, 'w').write(json.dumps(subtitle, indent=2, sort_keys=True))
     return Response({'status': 'subtitle downloaded'})
 
 @csrf_exempt
@@ -46,7 +51,7 @@ def find_sentence(request):
     corpus = []
     corpus_time = []
     corpus.append(transcript)
-    with open('../../demo/src/'+video_id+'.json') as subtitle:
+    with open(video_id+'.json') as subtitle:
         sjson = subtitle.read()
         sjdata = json.loads(sjson)
         for line in sjdata:
@@ -70,6 +75,11 @@ def find_sentence(request):
     if result_idx != 1:
         found = True
     return Response({'time': corpus_time[result_idx-1], 'found': found})
+
+# @csrf_exempt
+# @api_view(["POST"])
+# def find_word(request):
+#     //
 
 
 class SessionViewSet(viewsets.ModelViewSet):
