@@ -19,6 +19,14 @@ from webdriver_manager.chrome import ChromeDriverManager
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np    
 import spacy
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.templatetags.static import static
+import os
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
 
 @api_view(["POST"])
 @action(detail=True, methods=['post'], name='download subtitles')
@@ -30,14 +38,19 @@ def download_subtitles(request):
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
-    browser = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
+    browser = webdriver.Chrome('/usr/bin/chromedriver', chrome_options=chrome_options)
     browser.get(URL)
-    soup = BeautifulSoup(html, 'html.parser')
-    soup.select('div#show a')[0].get('href')
-    href = soup.select('div#show a')[0].get('href')
+    # driver = webdriver.PhantomJS()
+    # driver.get(URL)
+    # r = requests.get(URL)
+    # html = r.text
+    # soup = BeautifulSoup(html, 'html.parser')
+    # print(html)
+    # href = soup.find_all('a')[0].get('href')
+    href = browser.find_element_by_name('a')
+    return Response({'status': href})
     subtitle = requests.get("https://downsub.com/"+href)
     subtitle = parse_srt(subtitle.content.decode())
-    subtitle = soup
     open("../static/"+out_filename, 'w').write(json.dumps(subtitle, indent=2, sort_keys=True))
     return Response({'status': 'subtitle downloaded'})
 
@@ -45,20 +58,18 @@ def download_subtitles(request):
 @api_view(["POST"])
 def find_sentence(request):
     found = False
-    transcript = ' '.join(request.data['transcript'])
-    print('given transcript is ', transcript)
+    transcript = ''.join(request.data['transcript'])
     video_id="6aVOjLuw-Qg"
     corpus = []
     corpus_time = []
     corpus.append(transcript)
-    with open(video_id+'.json') as subtitle:
+    with open((os.path.join(STATIC_ROOT, video_id + '.json'))) as subtitle:
         sjson = subtitle.read()
         sjdata = json.loads(sjson)
         for line in sjdata:
             # print(line)
             corpus.append(line['content'])
             corpus_time.append(line['start'])
-    print(corpus)
     #lemmatization using spacy
     nlp = spacy.load('en', disable=['parser', 'ner'])
     for i,sentence in enumerate(corpus):
@@ -76,10 +87,7 @@ def find_sentence(request):
         found = True
     return Response({'time': corpus_time[result_idx-1], 'found': found})
 
-# @csrf_exempt
-# @api_view(["POST"])
-# def find_word(request):
-#     //
+
 
 
 class SessionViewSet(viewsets.ModelViewSet):

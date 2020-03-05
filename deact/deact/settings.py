@@ -25,7 +25,7 @@ SECRET_KEY = '!rsi+n9s#s7hj)z=21xs+72_bb9$_sgq9@rqi4o-w+nia@_g)g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['15.164.225.210','rubyslippers.kixlab.org', 'ec2-15-164-225-210.ap-northeast-2.compute.amazonaws.com']
+ALLOWED_HOSTS = ['15.164.225.210','rubyslippers.kixlab.org', 'ec2-15-164-225-210.ap-northeast-2.compute.amazonaws.com', 'ip-172-31-30-12.ap-northeast-2.compute.internal']
 
 
 # Application definition
