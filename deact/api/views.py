@@ -58,8 +58,8 @@ def download_subtitles(request):
 @api_view(["POST"])
 def find_sentence(request):
     found = False
-    transcript = ''.join(request.data['transcript'])
-    video_id="6aVOjLuw-Qg"
+    transcript = ' '.join(request.data['transcript'])
+    video_id=request.data['videoID']
     corpus = []
     corpus_time = []
     corpus.append(transcript)
@@ -67,7 +67,7 @@ def find_sentence(request):
         sjson = subtitle.read()
         sjdata = json.loads(sjson)
         for line in sjdata:
-            # print(line)
+            print(line)
             corpus.append(line['content'])
             corpus_time.append(line['start'])
     #lemmatization using spacy
@@ -82,10 +82,10 @@ def find_sentence(request):
     arr = pairwise_similarity.toarray()   
     np.fill_diagonal(arr, np.nan)     
     result_idx = np.nanargmax(arr[0])    
-    print('most similar sentence is ', corpus[result_idx], arr[0])
+    # print('most similar sentence is ', corpus[result_idx], arr[0])
     if result_idx != 1:
         found = True
-    return Response({'time': corpus_time[result_idx-1], 'found': found})
+    return Response({'time': corpus_time[result_idx-1], 'content': corpus[result_idx], 'found': found})
 
 
 

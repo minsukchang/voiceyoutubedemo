@@ -6,6 +6,7 @@ from django.contrib.postgres.fields import ArrayField
 
 class Session(models.Model):
     # sessionID = models.IntegerField(primary_key=True, blank=False)
+    videoID = models.CharField(blank=True, max_length=20)
     pauses = ArrayField(
         models.TimeField(blank=True),
         null=True,

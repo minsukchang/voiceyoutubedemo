@@ -3,9 +3,14 @@ import YouTube from 'react-youtube';
 import SpeechRecognition from 'react-speech-recognition';
 import { Header, Input, Form, Button, Progress, Dimmer, Loader } from 'semantic-ui-react';
 import './App.css';
-import subtitle from './6aVOjLuw-Qg.json';
 import axios from 'axios';
-import {Link}  from 'react-router-dom';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Drawer from '@material-ui/core/Drawer';
+import classNames from 'classnames';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Divider from '@material-ui/core/Divider';
+import {clips} from './scripts';
 
 // Helper Functions
 
@@ -22,7 +27,7 @@ function formatTime(time) {
 
 function extract_description(transcript) {
   const arr = transcript.split(" ");
-  const extra_words = ['I', 'want', 'to', 'umm','hmm', 'how', 'let', 'me', 'like', 'well', 'let\'s', 'from', 'for', 'can', 'may', 'when', 'where', 'she', 'he', 'the', 'an', 'a']
+  const extra_words = ['I', 'want', 'to', 'umm','hmm', 'let', 'me', 'like', 'well', 'let\'s', 'from', 'for', 'can', 'may', 'she', 'he', 'the', 'an', 'a']
   return arr.filter(function(item) { 
     return extra_words.indexOf(item) < 0; // Returns true for items not found in extra_words.
  });
@@ -47,7 +52,7 @@ var play_variants = ['play', 'go', 'show', 'resume', 'begin', 'watch', 'start'];
 var pause_variants = ['pause', 'stop', 'hold', 'wait' ];
 
 //if followed by bookmark or descriptive words, go to that part. 
-var jump_variants = ['jump', 'find', 'see', 'search', 'look'].concat(play_variants);
+var jump_variants = ['jump', 'find', 'see', 'search', 'look', 'where', 'when', 'how'].concat(play_variants);
 
 //if followed by time, go that much. Otherwise, default is 30 secs.
 var future_variants = ['future', 'skip', 'forward', 'next', 'later'];
@@ -175,12 +180,13 @@ function extract_time(transcript) {
   return nnumber;
 }
 
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       videoState: null,
-      videoId: "6aVOjLuw-Qg",
+      videoID: "6aVOjLuw-Qg",
       url: '',
       duration: 0,
       currentTime: 0,
@@ -190,17 +196,17 @@ class App extends Component {
       bookmarks: [],
       returnpoints: [],
       showInstruction: false,
+      open: false,
     }
-    this.downloadSubtitles = this.downloadSubtitles.bind(this);
     this._onPlay = this._onPlay.bind(this);
     this._onPause = this._onPause.bind(this);
     this._onStateChange = this._onStateChange.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onClickHandler = this.onClickHandler.bind(this);
     this._onReady = this._onReady.bind(this);
     this.onListenHandler = this.onListenHandler.bind(this);
-    this.handleShow = this.handleShow.bind(this)
+    this.handleShow = this.handleShow.bind(this);
+    this.onJumpHandler = this.onJumpHandler.bind(this);
 
   }
 
@@ -227,7 +233,8 @@ class App extends Component {
     }
 
     if (sessionStorage.getItem('sessionCreated') === null) {
-      axios.post('http://15.164.225.210/backend/sessions/', {
+      axios.post('https://rubyslippers.kixlab.org/backend/sessions/', {
+        videoID: this.state.videoID,
         pauses: [],
         bookmarks: [],
         transcripts: [],
@@ -239,15 +246,6 @@ class App extends Component {
         console.log('new session created' + sessionStorage.getItem('sessionID'))
       });
     }
-    // this.downloadSubtitles();
-  }
-
-  async downloadSubtitles(video_id){
-    axios.post('http://15.164.225.210/backend/download_subtitles/', {
-      video_id: video_id
-    }).then((response) => {
-      console.log(response)
-    });
   }
 
   getQueryVariable(url, variable) {
@@ -267,6 +265,14 @@ class App extends Component {
       showInstruction: true
     })
   }
+
+
+  handleDrawerOpen = () => {
+    this.setState({ open: true });
+  };
+  handleDrawerClose = () => {
+    this.setState({ open: false });
+  };
   _onReady(event) {
     this.setState({
       duration: event.target.getDuration(), 
@@ -286,7 +292,7 @@ class App extends Component {
   _onPause(event) {
     const { updateInterval } = this.state;
     clearInterval(updateInterval);
-    axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_pause/', {
+    axios.post('https://rubyslippers.kixlab.org/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_pause/', {
       time: formatTime(event.target.getCurrentTime())
     });
     console.log('pause time is ', formatTime(event.target.getCurrentTime()))
@@ -334,6 +340,15 @@ class App extends Component {
     }
   }
 
+  onJumpHandler(time) {
+    const {currentTime, returnpoints } = this.state;
+    axios.post('https://rubyslippers.kixlab.org/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_returnpoint/', {
+      time: formatTime(currentTime)
+    });
+    returnpoints.push(currentTime);
+    this.state.videoTarget.seekTo(time);
+  }
+
   onTranscriptHandler(transcript) {
     var time, common;
     const { resetTranscript } = this.props;
@@ -346,7 +361,7 @@ class App extends Component {
     }
     //reset previousTranscript and Transcript and process
     else if(transcript !== '' && !transcriptTime){
-      axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_transcript/', {
+      axios.post('https://rubyslippers.kixlab.org/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_transcript/', {
         time: formatTime(currentTime),
         transcript: transcript
       });
@@ -367,7 +382,7 @@ class App extends Component {
           bookmarks.push(currentTime);
           bookmarks.sort();
           this.setState({bookmarks: bookmarks});
-          axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_bookmark/', {
+          axios.post('https://rubyslippers.kixlab.org/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_bookmark/', {
             time: formatTime(currentTime)
           });
           console.log('bookmark time is ', formatTime(currentTime))
@@ -376,29 +391,19 @@ class App extends Component {
         while(bookmarks[++idx] < currentTime);
         idx--;
         if (idx===0 && bookmarks[0] > currentTime) idx=-1;
-        console.log('next bookmark', idx, bookmarks, bookmarks[idx])
         if (arr.includes('next') && bookmarks.length>idx) {
-          console.log('next bookmark', idx, bookmarks, bookmarks[idx])
-          axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_returnpoint/', {
-            time: formatTime(currentTime)
-          });
-          returnpoints.push(currentTime);
-          this.state.videoTarget.seekTo(bookmarks[idx+1]);
+          this.onJumpHandler(bookmarks[idx+1]);
         }
         else if (arr.includes('previous') && bookmarks.length>0 && bookmarks[idx]<currentTime) {
-          axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_returnpoint/', {
-            time: formatTime(currentTime)
-          });
-          returnpoints.push(currentTime);
-          this.state.videoTarget.seekTo(bookmarks[idx]);
+          this.onJumpHandler(bookmarks[idx]);
         }
       }
       else if(common_elem(arr, future_variants)) {
         if (arr.length === 1){
-          videoTarget.seekTo(currentTime + 30);
+          this.onJumpHandler(currentTime + 30);
         }
         else if (time = extract_time(arr)){
-          videoTarget.seekTo(currentTime + time);
+          this.onJumpHandler(currentTime + time);
         }
         else{
           console.log('Please provide time');
@@ -406,10 +411,10 @@ class App extends Component {
       }
       else if(common_elem(arr, past_varaints)) {
         if (arr.length === 1){
-          videoTarget.seekTo(currentTime - 30);
+          this.onJumpHandler(currentTime - 30);
         }
         else if (time = extract_time(arr)){
-          videoTarget.seekTo(currentTime - time);
+          this.onJumpHandler(currentTime - time);
         }
         else{
           console.log('Please provide time');
@@ -434,21 +439,16 @@ class App extends Component {
           }
         }
         else{
-          this.findWord(arr.filter(value => !common.includes(value)));
+          this.findWord(this.state.videoID, arr.filter(value => !common.includes(value)));
         }
       }
       else if (common_elem(arr, again_variants)) {
         // TODO: if there was recent navigate action, repeat that. else, go back 30 sec.
-        videoTarget.seekTo(currentTime - 30);
+        this.onJumpHandler(currentTime - 30);
       }
       else if (arr.includes('return')){
         const {returnpoints, currentTime } = this.state;
-        console.log('here return is called', returnpoints);
-        axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_returnpoint/', {
-          time: formatTime(currentTime)
-        });
-        this.state.videoTarget.seekTo(returnpoints[returnpoints.length-1]);
-        returnpoints.push(currentTime);
+        this.onJumpHandler(returnpoints[returnpoints.length-1]);
       }
       else{
         console.log('Please be more descriptive4');
@@ -465,19 +465,27 @@ class App extends Component {
     else this.state.videoTarget.playVideo();
   }
 
-  handleChange(e, { name, value }) {
-    this.setState({ [name]: value });
-    console.log("handle change");
-  }
-
-  handleSubmit() {
-    const videoId = this.getQueryVariable(this.state.url,'v');
-    this.setState({videoId: videoId, url: '' })
+  handleSubmit(videoID) {
+    this.setState({videoID: videoID, url: '' })
     console.log("changed the video");
-    this.downloadSubtitles(videoId)
+    this.handleDrawerClose();
+    axios.post('https://rubyslippers.kixlab.org/backend/sessions/', {
+        videoID: videoID,
+        pauses: [],
+        bookmarks: [],
+        transcripts: [],
+        transcript_times: [],
+        returnpoints: []
+      }).then((response) => {
+        sessionStorage.setItem('sessionID', response.data.id)
+        sessionStorage.setItem('sessionCreated', true)
+        console.log('session changed' + sessionStorage.getItem('sessionID'))
+      });
   }
 
-  findWord(words) {
+  findWord(videoID, words) {
+    const subtitle = require('./' + videoID + '.json');
+    console.log(subtitle);
     console.log(words);
     const { currentTime,returnpoints } = this.state;
     //keyword matching
@@ -495,19 +503,11 @@ class App extends Component {
       console.log('prev array: ', previousTimeArray);
       console.log('future array: ', futureTimeArray);
       if(previousTimeArray.length){
-        axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_returnpoint/', {
-          time: formatTime(currentTime)
-        });
-        returnpoints.push(currentTime);
-        this.state.videoTarget.seekTo(previousTimeArray[previousTimeArray.length-1].start);
+        this.onJumpHandler(previousTimeArray[previousTimeArray.length-1].start);
         this.state.videoTarget.playVideo();
       }
       else if (futureTimeArray.length){
-        axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_returnpoint/', {
-          time: formatTime(currentTime)
-        });
-        returnpoints.push(currentTime);
-        this.state.videoTarget.seekTo(futureTimeArray[futureTimeArray.length-1].start);
+        this.onJumpHandler(futureTimeArray[futureTimeArray.length-1].start);
         this.state.videoTarget.playVideo();
       }
       else{
@@ -516,15 +516,12 @@ class App extends Component {
     }
     //sentence similarity
     else{
-      axios.post('http://15.164.225.210/backend/find_sentence/', {
+      axios.post('https://rubyslippers.kixlab.org/find_sentence/', {
+        videoID: this.state.videoID,
         transcript: words
       }).then((response) => {
-        axios.post('http://15.164.225.210/backend/sessions/'+sessionStorage.getItem('sessionID')+'/add_returnpoint/', {
-          time: formatTime(currentTime)
-        });
         if(response.data.found){
-          returnpoints.push(currentTime);
-          this.state.videoTarget.seekTo(response.data.time)
+          this.onJumpHandler(response.data.time);
           this.state.videoTarget.playVideo();
         }
         else{
@@ -536,29 +533,55 @@ class App extends Component {
   }
 
   render() {
-    const { transcript, listening } = this.props;
-    const { videoId, url, duration, currentTime, videoTarget, bookmarks, videoState } = this.state;
+    const { transcript, listening, classes } = this.props;
+    const { videoID, url, duration, currentTime, videoTarget, bookmarks, videoState } = this.state;
     // if (videoState && videoState === 5 && this.state.videoTarget.getDuration() != duration) {
     //   this.setState({duration: this.state.videoTarget.getDuration()})
     // }
     return (
       <div className="App">
-        <div className="header-title">
-          <Header as="h2">
-            VoiceYoutubeDemo
-          </Header>
-        </div>
-        <div className="input-url">
-          <Form onSubmit={this.handleSubmit}>
-            <Input id="url" name="url" onChange={this.handleChange} action={{ icon: 'search' }} value={url} placeholder='Submit youtube URL' />
-          </Form>
-          <a href='http://127.0.0.1:8000/instructions' target="_blank" id="instruction" className="readme">README</a>
+        
+        <div className="header-bar">
+          <div className="header-title">
+            <Header as="h2">
+              RubySlippers
+            </Header>
+          </div>
+          <IconButton
+            aria-label="Open drawer"
+            onClick={this.handleDrawerOpen}>
+            <MenuIcon style={{ fontSize: '30px'}}/>
+          </IconButton>
+          <Drawer
+            classes={{
+              paper: classNames("drawerPaper", !this.state.open && "drawerPaperClose"),
+            }}
+            open={this.state.open} anchor="right" >
+            <div>
+              <IconButton onClick={this.handleDrawerClose}>
+                <ChevronRightIcon />
+              </IconButton>
+            </div>
+            <Divider />
+            {clips.map(clip => (
+              <div >
+                <Button style={{ fontSize: '18px', width: '100%', paddingTop: '10%', paddingBottom: '12%' }} key={clip}
+                  onClick={() => this.handleSubmit(clip.videoID)}>
+                  <img src={clip.image} style={{width: '70%', height: '70%', }} />
+                  <div style={{ position: 'absolute' }}>
+                    {clip.title}
+                  </div>
+                </Button>
+              </div>
+            ))}
+          </Drawer>
         </div>
         <div className="container-wrapper">
+          <a href='https://rubyslippers.kixlab.org' target="_blank" id="instruction" className="readme">README</a> 
           <div className="container-video">
             <YouTube
               className="youtube-video"
-              videoId={videoId}
+              videoId={videoID}
               onPause={this._onPause}
               onPlay={this._onPlay}
               onReady={this._onReady}
