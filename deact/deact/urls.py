@@ -15,18 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from api.views import SessionViewSet, download_subtitles, find_sentence
+from api.views import SessionViewSet, NavigationViewSet, download_subtitles, find_sentence
 from core.views import index, instructions
 from rest_framework.routers import DefaultRouter
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register('sessions', SessionViewSet)
+router.register('navigations', NavigationViewSet)
 
 urlpatterns = [
     path('', instructions, name="instructions"),
     path('demo', index, name="index"),
     path('backend/', include(router.urls)),
+    # path('backend/', include(navigation_router.urls)),
     path('admin/', admin.site.urls),
     path('download_subtitles/', download_subtitles, name="download subtitles"),
     path('find_sentence/', find_sentence)

@@ -80,7 +80,7 @@
                                 <p> In this demo, we want to see how people use voice to navigate <b>HOW-TO VIDEOS</b>.</p>
                                 <p> On the interface, you can control the video using voice. We are deliberately not telling you the exact commands, because we want to see how YOU navigate the video and how YOU say them</p>
 
-                                <p> Click on the “start listening” button and you will see the transcript of what you say.</p>
+                                <p> Click on the “Start Talking button and you will see the transcript of what you say.</p>
                                 <p>
                                     <b>THIS IS HYPOTHETICAL, SO DON'T WORRY ABOUT SAYING IT IN A
                                     WAY A SYSTEM WOULD UNDERSTAND.</b> Just say <b>HOW YOU </b> want to say it.
@@ -88,10 +88,15 @@
                                 <p style="color:red">
                                     Example
                                     <ul>
-                                        <li>my need: "I want to see the beginning of the step, because I want to check if
-                                            I have it right"</li>
-                                        <li>I want to be able to say: "let me see that again"</li>
+                                        <li>my need: "I want to see the part where she adds salt to check how much I need it"</li>
+                                        <li>I want to be able to say: "Where's the salt?"</li>
                                     </ul>
+                                    <ul>
+                                        <li>my need: "I want to see move a bit forward"</li>
+                                        <li>I want to be able to say: "30 seconds before"</li>
+                                    </ul>
+                                </p>
+                                
                                 </p>
                             </div>
                             <div class="modal-footer">
@@ -109,7 +114,7 @@
                     <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Instruction 1/5 - Use Chrome Browser</h4>
+                                <h4 class="modal-title" id="myModalLabel">Instruction 1/6 - Use Chrome Browser</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
@@ -135,7 +140,7 @@
                     <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Instruction 2/5 - Allowing Microphone Access</h4>
+                                <h4 class="modal-title" id="myModalLabel">Instruction 2/6 - Allowing Microphone Access</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
@@ -161,12 +166,12 @@
                     <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Instruction 3/5 - Changing Video in the Interface</h4>
+                                <h4 class="modal-title" id="myModalLabel">Instruction 3/6 - Changing Video in the Interface</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
                                 <p>You can change the video to watch using the <b>MENU ON TOP RIGHT</b></p>
-                                <p>If you want to request videos not on the list, please contact mina1004h@gmail.com</p>
+                                <p>If you want to request videos not on the list, please contact minarainbow@kaist.ac.kr</p>
                                 <p> <img src="/static/change-video.gif" style="width:70%; height:70%;" 
                                         class="border center"> </p>
                             </div>
@@ -227,14 +232,12 @@
                     <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Instruction 4/5 - Wearing a Headset</h4>
+                                <h4 class="modal-title" id="myModalLabel">Instruction 4/6 - Wearing a Headset</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
-
-                                <p>
-                                    Please wear a headset to watch the video and follow the tasks </p>
-
+                                <p>Please wear a headset to watch the video and follow the tasks. </p>
+                                <p>Click START LISTENING to start controlling the video using voice. </p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
@@ -251,19 +254,48 @@
                     <div class="modal-dialog modal-lg" style="width:100%;">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Instruction 5/5 - Picking a Different Video</h4>
+                                <h4 class="modal-title" id="myModalLabel">Instruction 5/6 - Using history and bookmarks</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
-                                <p>Feel free to pick another HOW-TO video, if first video is not good for you at any point in the
-                                    study.
+                                <p>After each jump, you can say <b>RETURN</b> to go to where you were before last jump.
                                 </p>
-                                <p>Just find another video from YouTube and paste the URL. </p>
+                                <p>Also, "some" of your navigation records will be added in below table. You can revisit this point by saying <b>NUMBER (ID #)</b>.</p>
+                                <p>While watching the video, you can also manually add bookmarks if you feel like it is likely to revist the frame. </p>
+                                <p>Say <b> ADD BOOKMARK</b>  and <b>GO TO NEXT/PREVIOUS BOOKMARK</b></p>
+                                <img src="/static/bookmark.png" style="width:75%; height:70%;"  class="border center"> </p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back<br/></button>
                                 <button type="button" id="proceed-btn7" class="btn btn-outline-success btn-next">I understand
-                                    that I can <br/>pick different videos</button>
+                                    that I can use <br/>bookmarks</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal8" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" style="width:100%;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel">Instruction 6/6 - Evaluating the navigation</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>After you navigate the video, an EVALUATION POPUP will show up asking whether the system has jumped correctly.
+                                </p>
+                                <p>Please take at least few seconds of break between each commands. Also, simple commands might not prompt this evaluation task.
+                                </p>
+                                <p>Unless the resulting frame is the exact frame you expected, please let us know the details about the failure.</p>
+                                <p>This cannot be done by voice, you have to use mouse and keyboard.</p>
+                                <img src="/static/evaluation.png" style="width:50%; height:70%;"  class="border center"> </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-warning btn-prev">Go Back<br/></button>
+                                <button type="button" id="proceed-btn7" class="btn btn-outline-success btn-next">I understand
+                                    that I have to evaluate <br/>the performance</button>
 
                             </div>
                         </div>
@@ -280,19 +312,15 @@
                             </div>
                             <div class="modal-body">
                                
-
-
-                                <!--
-                <p>Go ahead open <a href="https://www.minsukchang.com/voiceyoutubedemo/ "> https://www.minsukchang.com/voiceyoutubedemo/
-                  </a>and <a href="https://www.youtube.com">YouTube</a> to start learning and doing while watching the video!
-                </p> -->
-                                <p>You can visit this instruction again by clicking "view instruction page again" button.</p>
+                                <p style="color:blue">
+                                    For compensation, please choose 2 videos and interact with each video until at least 10 entries have been added to the table. 
+                                    (at least 10 mins per each video)
+                                </p>
+                                <p>You can visit this instruction again by clicking "README" button.</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-warning btn-prev">Go Back</button>
-                                <!-- <button type="button" id="proceed-btn8" class="btn btn-outline-success" data-dismiss="modal">READY
-                                    TO START!</button> -->
-                                <a href='https://rubyslippers.kixlab.org/demo' target="_blank" id="demo" className="demo">DEMO</a>
+                                <a href='https://rubyslippers.kixlab.org/demo' target="_blank" id="demo" className="demo">Let's Start</a>
 
                             </div>
                         </div>

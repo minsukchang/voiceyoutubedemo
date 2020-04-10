@@ -1,10 +1,14 @@
 import re
 from rest_framework import serializers
-from api.models import Session
+from api.models import Session, Navigation
 
 class SessionSerializer(serializers.ModelSerializer):
     """Serializes Session models."""
-    # sessionID = serializers.CharField()
+    navigations = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='navigation-detail'
+    )
     
 
     class Meta:
@@ -12,3 +16,19 @@ class SessionSerializer(serializers.ModelSerializer):
         # fields = ('sessionID', 'pauses', 'transcripts', 'transcript_times', 'bookmarks')
 
         fields = '__all__'
+
+class NavigationSerializer(serializers.ModelSerializer):
+    """Serializes Session models."""
+    
+    # session = SessionSerializer(required = False)
+    session = serializers.HyperlinkedRelatedField(
+        read_only=True,
+        view_name='session-detail'
+    )
+    class Meta:
+        model = Navigation
+
+        fields = '__all__'
+        extra_kwargs = {
+            'session': {'allow_null': True, 'required': False},
+        }

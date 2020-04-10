@@ -11,8 +11,8 @@ from rest_framework.decorators import action
 from django.views.decorators.csrf import csrf_exempt
 from bs4 import BeautifulSoup
 import requests, json, os
-from api.models import Session 
-from api.serializers import SessionSerializer
+from api.models import Session, Navigation
+from api.serializers import SessionSerializer, NavigationSerializer
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
@@ -97,7 +97,7 @@ class SessionViewSet(viewsets.ModelViewSet):
     """
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
-
+    
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -128,7 +128,7 @@ class SessionViewSet(viewsets.ModelViewSet):
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)      
 
-    @action(detail=True, methods=['post'], name='add pause')
+    @action(detail=True, methods=['put'], name='add pause')
     def add_pause(self, request, pk=None):
         session = self.get_object()
         print('the request time data is ', request.data['time'])
@@ -136,7 +136,7 @@ class SessionViewSet(viewsets.ModelViewSet):
         session.save()
         return Response({'status': 'pause added'})
 
-    @action(detail=True, methods=['post'], name='add bookmark')
+    @action(detail=True, methods=['put'], name='add bookmark')
     def add_bookmark(self, request, pk=None):
         session = self.get_object()
         print('the request time data is ', request.data['time'])
@@ -144,16 +144,7 @@ class SessionViewSet(viewsets.ModelViewSet):
         session.save()
         return Response({'status': 'bookmark added'})
 
-    @action(detail=True, methods=['post'], name='add transcript')
-    def add_transcript(self, request, pk=None):
-        session = self.get_object()
-        print('the request time data is ', request.data['time'])
-        session.transcripts.append(request.data['transcript'])
-        session.transcript_times.append(request.data['time'])
-        session.save()
-        return Response({'status': 'transcript added'})
-
-    @action(detail=True, methods=['post'], name='add returnpoint')
+    @action(detail=True, methods=['put'], name='add returnpoint')
     def add_returnpoint(self, request, pk=None):
         session = self.get_object()
         print('the request time data is ', request.data['time'])
@@ -161,4 +152,82 @@ class SessionViewSet(viewsets.ModelViewSet):
         session.save()
         return Response({'status': 'returnpoint added'})
 
+    @action(detail=True, methods=['put'], name='add username')
+    def add_username(self, request, pk=None):
+        session = self.get_object()
+        print('the username is ', request.data['username'])
+        session.username = request.data['username']
+        session.save()
+        return Response({'status': 'username added'})
+
+
+
+class NavigationViewSet(viewsets.ModelViewSet):
+
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update`, and `destroy` actions.
+    """
+    queryset = Navigation.objects.all()
+    serializer_class = NavigationSerializer
+
+    def create(self, request, *args, **kwargs):
+        print('here', request.data)
+        session = request.data['sessionID']
+        print('session is', session)
+        session_instance = Session.objects.filter(id=session).first()
+        print('session_instance is', session_instance)
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            print(serializer.errors)
+        self.perform_create(serializer, session_instance)
+
+        # serializer.save(Session = session_instance)
+        # serializer.save()
+        return Response(serializer.data, status=HTTP_200_OK)
+
+    def perform_create(self, serializer, session_instance):
+        serializer.save(session = session_instance)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)   
+
     
+    @action(detail=True, methods=['put'], name='add evaluation')
+    def add_evaluation(self, request, pk=None):
+        navigation = self.get_object()
+        navigation.subtitle = request.data.get('subtitle')
+        navigation.subtitle_time = request.data.get('subtitle_time')
+        navigation.intended_time = request.data.get('intended_time')
+        navigation.correct = request.data.get('correct')
+        navigation.error_type = request.data.get('error_type')
+        navigation.error_details = request.data.get('error_details')
+        navigation.save()
+        return Response({'status': 'transcript added'})
+
+
+    # @action(detail=True, methods=['post'], name='add transcript')
+    # def add_transcript(self, request, pk=None):
+    #     navigation = self.get_object()
+    #     navigation.transcript = request.data['transcript']
+    #     navigation.transcript_time = request.data['time']
+    #     navigation.save()
+    #     return Response({'status': 'transcript added'})
